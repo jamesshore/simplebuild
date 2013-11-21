@@ -7,6 +7,8 @@
 		var result = {};
 		Object.keys(module).forEach(function(key) {
 			result[key] = transform(module[key]);
+			result[key].title = module[key].title;
+			result[key].description = module[key].description;
 		});
 		return result;
 	};

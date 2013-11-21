@@ -2,16 +2,23 @@
 (function() {
 	"use strict";
 
-	var runningExt = require("./simplebuild-ext-running.js");
-	var barebones = runningExt.wrap(require("./simplebuild-barebones.js"));
+	var barebones = require("./simplebuild-barebones.js");
 
-	console.log("\nRun succeed()");
+	var runningExt = require("./simplebuild-ext-running.js");
+	var headerExt = require("./simplebuild-ext-header.js");
+
+
+	barebones = headerExt.addHeader(runningExt.wrap(barebones));
+//	barebones = headerExt.addHeader(barebones);
+//	barebones = runningExt.wrap(barebones);
+
+	console.log();
 	barebones.succeed({}, success, failure);
 
-	console.log("\nRun fail()");
+	console.log();
 	barebones.fail({}, success, failure);
 
-	console.log("\nRun succeedOrFail()");
+	console.log();
 	barebones.succeedOrFail({ fail: true }, success, failure);
 
 	function success() {

@@ -9,7 +9,7 @@
 		console.log("This will succeed.");
 		success();
 	};
-	exports.succeed.name = "Succeed";
+	exports.succeed.title = "Succeed";
 	exports.succeed.description = "A task that always succeeds.";
 
 	// Always fails
@@ -17,7 +17,7 @@
 		console.log("This will fail.");
 		failure("Failed, as requested");
 	};
-	exports.fail.name = "Fail";
+	exports.fail.title = "Fail";
 	exports.fail.description = "A task that always fails.";
 
 	// Either succeeds or fails depending on the `fail` option (default false)
@@ -26,7 +26,7 @@
 		if (options.fail) failure("Failed, as configured");
 		else success();
 	};
-	exports.succeedOrFail.name = "Succeed or Fail";
+	exports.succeedOrFail.title = "Succeed or Fail";
 	exports.succeedOrFail.description = "A task that either succeeds or fails depending on configuration.";
 
 }());
