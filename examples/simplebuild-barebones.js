@@ -9,6 +9,9 @@
 		console.log("This will succeed.");
 		success();
 	};
+	exports.succeed.name = "Succeed";
+	exports.succeed.description = "A task that always succeeds.";
+
 
 	// Always fails
 	exports.fail = function(options, success, failure) {
