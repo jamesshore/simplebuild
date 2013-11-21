@@ -2,15 +2,16 @@
 (function() {
 	"use strict";
 
-	var barebones = require("./simplebuild-barebones.js");
+	var runningExt = require("./simplebuild-ext-running.js");
+	var barebones = runningExt.wrap(require("./simplebuild-barebones.js"));
 
-	console.log("Run succeed()");
+	console.log("\nRun succeed()");
 	barebones.succeed({}, success, failure);
 
-	console.log("Run fail()");
+	console.log("\nRun fail()");
 	barebones.fail({}, success, failure);
 
-	console.log("Run succeedOrFail()");
+	console.log("\nRun succeedOrFail()");
 	barebones.succeedOrFail({ fail: true }, success, failure);
 
 	function success() {
