@@ -13,8 +13,11 @@
 
 	function transform(fn) {
 		return function(options, success, failure) {
+			var underline = new Array(fn.title.length + 1).join("=");
+
+			console.log();
 			console.log(fn.title);
-			console.log("----------");
+			console.log(underline);
 			fn(options, success, failure);
 		};
 	}
