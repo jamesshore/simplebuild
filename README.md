@@ -34,6 +34,8 @@ Simplebuild modules MAY export any number of functions. Each exported function m
 
 Note: Either success() OR failure() MUST be called exactly once each time an exported function is called. It MAY be called synchronously or asynchronously.
 
+Note 2: Exported functions MUST NOT throw exceptions. Call failure() instead of throwing an exception.
+
 
 Extension Specification
 --------------
