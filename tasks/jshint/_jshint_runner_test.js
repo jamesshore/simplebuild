@@ -4,7 +4,6 @@
 var expect = require("expect.js");
 var assert = require("assert");
 var fs = require("fs");
-var path = require("path");
 
 var lint = require("./jshint_runner.js");
 var testDir = "build/temp_files/";
@@ -74,8 +73,8 @@ describe("File validation", function() {
 	}
 
 	afterEach(function() {
-		if (path.existsSync(testFile)) fs.unlinkSync(testFile);
-		assert.ok(!path.existsSync(testFile), "Could not delete test file: " + testFile);
+		if (fs.existsSync(testFile)) fs.unlinkSync(testFile);
+		assert.ok(!fs.existsSync(testFile), "Could not delete test file: " + testFile);
 	});
 
 	it("should load file from file system (UTF-8 assumed)", function() {
@@ -121,7 +120,7 @@ describe("File list validation", function() {
 	afterEach(function() {
 		testFiles.forEach(function(testFile) {
 			fs.unlinkSync(testFile);
-			assert.ok(!path.existsSync(testFile), "Could not delete test file: " + testFile);
+			assert.ok(!fs.existsSync(testFile), "Could not delete test file: " + testFile);
 		});
 	});
 
