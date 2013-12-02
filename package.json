@@ -1,0 +1,18 @@
+{
+  "name": "simplebuild",
+  "version": "0.0.0",
+  "description": "Universal build automation",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "node build.js"
+  },
+  "keywords": [
+    "build",
+    "tasks",
+    "automation"
+  ],
+  "author": "James Shore",
+  "license": "BSD-2-Clause"
+}
