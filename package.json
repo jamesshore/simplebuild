@@ -14,5 +14,8 @@
     "automation"
   ],
   "author": "James Shore",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "jshint": "~2.3.0"
+  }
 }
