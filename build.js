@@ -24,8 +24,6 @@ jshint.validate({
 	console.log("\n\nFAILED: " + message);
 });
 
-
-
 function lintOptions() {
 	return {
 		bitwise: true,
