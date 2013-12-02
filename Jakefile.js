@@ -2,26 +2,25 @@
 "use strict";
 
 var addHeader = require("./examples/simplebuild-ext-header.js").addHeader;
+var jakeify = require("./extensions/simplebuild-ext-jakeify.js").wrap;
 
-var jshint = addHeader(require("./tasks/simplebuild-jshint.js"));
-var mocha = addHeader(require("./tasks/simplebuild-mocha.js"));
+var jshint = jakeify(addHeader(require("./tasks/simplebuild-jshint.js")));
+var mocha = jakeify(addHeader(require("./tasks/simplebuild-mocha.js")));
 
-task("default", ["lint", "test"]);
+task("default", ["lint", "test"], function() {
+	console.log("\n\nOK");
+});
 
 desc("Lint everything");
-task("lint", { async: true }, function() {
-	jshint.validate({
-		files: ["build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js"],
-		options: lintOptions(),
-		globals: {}
-	}, complete, fail)
+jshint.validate.task("lint", {
+	files: ["build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js"],
+	options: lintOptions(),
+	globals: {}
 });
 
 desc("Test everything");
-task("test", { async: true }, function() {
-	mocha.runTests({
-		files: ["tasks/jshint/_jshint_runner_test.js"]
-	}, complete, fail);
+mocha.runTests.task("test", [], {
+	files: ["tasks/jshint/_jshint_runner_test.js"]
 });
 
 function lintOptions() {

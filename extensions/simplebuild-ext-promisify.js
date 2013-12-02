@@ -4,7 +4,7 @@
 var simplebuild = require("../lib/simplebuild.js");
 var Q = require("q");
 
-// A Simplebuild extension that takes a Simplebuild module and turns every function into a promise.
+// Turns every function in a simplebuild module into a promise.
 exports.wrap = function(module) {
 	return simplebuild.mapModule(module, transform);
 };
