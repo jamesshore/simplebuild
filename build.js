@@ -2,28 +2,29 @@
 "use strict";
 
 var addHeader = require("./examples/simplebuild-ext-header.js").addHeader;
+var promisify = require("./extensions/simplebuild-ext-promisify.js").wrap;
 
-var jshint = addHeader(require("./tasks/simplebuild-jshint.js"));
-var mocha = addHeader(require("./tasks/simplebuild-mocha.js"));
+var jshint = promisify(addHeader(require("./tasks/simplebuild-jshint.js")));
+var mocha = promisify(addHeader(require("./tasks/simplebuild-mocha.js")));
 
 jshint.validate({
 	files: ["build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js"],
 	options: lintOptions(),
 	globals: {}
-}, function() {
-
-	mocha.runTests({
+})
+.then(function() {
+	return mocha.runTests({
 		files: ["tasks/jshint/_jshint_runner_test.js"]
-	}, function() {
-
-		console.log("\n\nOK");
-	}, die);
-}, die);
-
-function die(message) {
+	});
+})
+.then(function() {
+	console.log("\n\nOK");
+})
+.fail(function(message) {
 	console.log("\n\nFAILED: " + message);
-	process.exit(1);
-}
+});
+
+
 
 function lintOptions() {
 	return {
