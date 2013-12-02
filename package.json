@@ -16,6 +16,8 @@
   "author": "James Shore",
   "license": "BSD-2-Clause",
   "devDependencies": {
-    "jshint": "~2.3.0"
+    "jshint": "~2.3.0",
+    "mocha": "~1.15.0",
+    "expect.js": "~0.2.0"
   }
 }

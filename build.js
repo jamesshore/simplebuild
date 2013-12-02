@@ -1,18 +1,29 @@
 // Copyright (c) 2013 Titanium I.T. LLC. All rights reserved. See LICENSE.TXT for details.
 "use strict";
 
-var jshint = require("./tasks/simplebuild-jshint.js");
-jshint = require("./examples/simplebuild-ext-header.js").addHeader(jshint);
+var addHeader = require("./examples/simplebuild-ext-header.js").addHeader;
+
+var jshint = addHeader(require("./tasks/simplebuild-jshint.js"));
+var mocha = addHeader(require("./tasks/simplebuild-mocha.js"));
 
 jshint.validate({
 	files: ["build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js"],
 	options: lintOptions(),
 	globals: {}
 }, function() {
-	console.log("\n\nOK");
-}, function() {
-	console.log("\n\nFAILED!");
-});
+
+	mocha.runTests({
+		files: ["tasks/jshint/_jshint_runner_test.js"]
+	}, function() {
+
+		console.log("\n\nOK");
+	}, die);
+}, die);
+
+function die(message) {
+	console.log("\n\nFAILED: " + message);
+	process.exit(1);
+}
 
 function lintOptions() {
 	return {

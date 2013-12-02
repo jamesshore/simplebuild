@@ -6,7 +6,7 @@ var jshint = require("./jshint/jshint_runner.js");
 exports.validate = function(options, success, failure) {
 	var result = jshint.validateFileList(options.files, options.options, options.globals);
 	if (result) success();
-	else failure("JSHint found errors");
+	else failure("JSHint found errors.");
 };
 
 exports.validate.title = "JSHint";
