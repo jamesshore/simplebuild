@@ -14,7 +14,7 @@ Design Goals
 Modules Specification
 -------
 
-Simplebuild modules are normal Node.js modules whose exported functions follow a common format. A Simplebuild module MUST have a name starting with "simplebuild-" but not "simplebuild-ext-". (For example, "simplebuild-yourmodule.js".)
+Simplebuild modules are normal Node.js modules whose exported functions follow a common format. A Simplebuild module SHOULD have a name starting with "simplebuild-" but not "simplebuild-ext-". (For example, "simplebuild-yourmodule.js".)
 
 Simplebuild modules MAY export any number of functions. Each exported function may use any name, except that they MUST NOT be named "sync()" or use a name ending in "Sync()" (case-sensitive). Each exported function MUST have this signature:
 
@@ -38,7 +38,7 @@ Note: Either success() OR failure() MUST be called exactly once each time an exp
 Extension Specification
 --------------
 
-Simplebuild extension modules extend the capabilities of Simplebuild. A Simplebuild extension module MUST have a name starting with "simplebuild-ext-" (for example, "simplebuild-ext-yourextension.js").
+Simplebuild extension modules extend the capabilities of Simplebuild. A Simplebuild extension module SHOULD have a name starting with "simplebuild-ext-" (for example, "simplebuild-ext-yourextension.js").
 
 Simplebuild extensions MAY export any number of functions with any signature. Exported functions MAY do anything, including composing other Simplebuild modules.
 
