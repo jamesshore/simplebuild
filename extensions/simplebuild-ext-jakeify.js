@@ -10,6 +10,8 @@ exports.wrap = function(module) {
 
 function transform(fn) {
 	fn.task = function(taskName, dependencies, options) {
+		if (!jake) throw new Error("Jake global not found. Are you running Jake?");
+
 		if (arguments.length === 2) {  // 'dependencies' is optional
 			options = dependencies;
 			dependencies = [];
@@ -22,10 +24,3 @@ function transform(fn) {
 
 	return fn;
 }
-
-
-//task("test", { async: true }, function() {
-//	mocha.runTests({
-//		files: ["tasks/jshint/_jshint_runner_test.js"]
-//	}, complete, fail);
-//});
