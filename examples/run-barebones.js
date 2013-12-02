@@ -12,13 +12,8 @@
 //	barebones = headerExt.addHeader(barebones);
 //	barebones = runningExt.wrap(barebones);
 
-	console.log();
 	barebones.succeed({}, success, failure);
-
-	console.log();
 	barebones.fail({}, success, failure);
-
-	console.log();
 	barebones.succeedOrFail({ fail: true }, success, failure);
 
 	function success() {
