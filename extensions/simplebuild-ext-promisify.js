@@ -5,9 +5,7 @@ var simplebuild = require("../lib/simplebuild.js");
 var Q = require("q");
 
 // Turns every function in a simplebuild module into a promise.
-exports.wrap = function(module) {
-	return simplebuild.mapTaskModule(module, transform);
-};
+module.exports.map = simplebuild.createMapFunction(transform);
 
 function transform(fn) {
 	return function(options) {

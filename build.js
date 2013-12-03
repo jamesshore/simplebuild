@@ -1,11 +1,12 @@
 // Copyright (c) 2013 Titanium I.T. LLC. All rights reserved. See LICENSE.TXT for details.
 "use strict";
 
-var addHeader = require("./examples/simplebuild-ext-header.js").addHeader;
-var promisify = require("./extensions/simplebuild-ext-promisify.js").wrap;
+var promisify = require("./extensions/simplebuild-ext-promisify.js")
+	.map("../examples/simplebuild-ext-header.js")
+	.map;
 
-var jshint = promisify(addHeader(require("./tasks/simplebuild-jshint.js")));
-var mocha = promisify(addHeader(require("./tasks/simplebuild-mocha.js")));
+var jshint = promisify("../tasks/simplebuild-jshint.js");
+var mocha = promisify("../tasks/simplebuild-mocha.js");
 
 jshint.validate({
 	files: ["build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js"],

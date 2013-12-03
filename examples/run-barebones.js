@@ -2,20 +2,10 @@
 (function() {
 	"use strict";
 
-//	var extensions = require("./simplebuild-ext-header.js")
-//		.wrap("./simplebuild-ext-running.js");
-//
-//	var barebones = extensions.wrap("./simplebuild-ext-barebones.js");
-
-
-	var headerExt = require("./simplebuild-ext-header.js");
-	var runningExt = require("./simplebuild-ext-running.js");
-	var barebones = require("./simplebuild-barebones.js");
-
 	var extensions = require("./simplebuild-ext-header.js")
 		.map("../examples/simplebuild-ext-running.js");
 
-	var barebones = extensions.map(barebones);
+	var barebones = extensions.map("../examples/simplebuild-barebones.js");
 
 	barebones.succeed({}, success, failure);
 	barebones.fail({}, success, failure);

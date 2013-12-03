@@ -64,7 +64,7 @@ The `map()` function MUST take a single parameter and return an object, as follo
 
 * When the parameter is any other object, it will be considered to be a task module. The `map()` function MUST return a task module object. The tasks SHOULD have different names and/or behavior than the provided task module.
 
-* When the parameter is a string, it will be considered to be a module name. The `map()` function MUST use the Node.js `require()` API call to load the module, then apply the above rules.
+* When the parameter is a string, it will be considered to be an npm module. The `map()` function MUST use the Node.js `require()` API call to load the module, then apply the above rules.
 
 
 Extension Modules
