@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 	return {
 		loadNpmTasks: function(moduleName) {
 			var module = require(path.join(process.cwd(), moduleName));
-			simplebuild.mapModule(module, transform);
+			simplebuild.mapTaskModule(module, transform);
 		}
 	};
 

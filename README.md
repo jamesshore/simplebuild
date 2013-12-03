@@ -30,7 +30,7 @@ Task Modules
 
 Task modules export functions that follow a common format. A task module SHOULD have a name starting with "simplebuild-" but not "simplebuild-ext-". (For example, "simplebuild-yourmodule.js".) Task modules MUST export one or more task functions.
 
-Task functions MUST NOT be named "sync()" or use a name ending in "Sync()" (case-sensitive). Any other name is permitted. Each task function MUST have conform to this signature:
+Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Sync()`. These restrictions are case-sensitive. Any other name is permitted. Each task function MUST have conform to this signature:
 
     exports.yourFunction = function(options, success, failure) { ... }
     exports.yourFunction.title = "Your Name";
@@ -56,17 +56,15 @@ Mapper Modules
 
 Mapper modules export a single function, `map()`, that transforms a Simplebuild module in some way. A mapper module SHOULD have a name starting with `simplebuild-map-`. (For example, `simplebuild-map-yourmapper.js`.)
 
-Mapper modules MUST use the `createMapFunction()` API call, defined in the `simplebuild` module, to create the `map()` function. Mapper Modules MUST NOT export any other functions other than `map()`. The transformation applied within the `map()` function SHOULD NOT have any side effects.
+Mapper modules SHOULD use the `createMapFunction()` API call, defined in the `simplebuild` module, to create the `map()` function. Mapper modules MUST NOT export any other functions other than `map()`. The transformation applied within the `map()` function SHOULD NOT have any side effects.
 
 The `map()` function MUST take a single parameter and return an object, as follows. These requirements are handled automatically by `createMapFunction()`.
 
-* When the parameter is a task module (that is, a task module's export object), the map() function MUST return an object containing the same function names, but they SHOULD be modified in some way when called.
+* When the parameter is an object with a single key named `map`, it will be considered to be a mapper module. The `map()` function MUST return a mapper module. The returned module's `map()` function MUST wrap the provided mapper module so that calling `thisModule.map(providedModule).map(taskModule)` is equivalent to calling `thisModule.map(providedModule.map(taskModule))`
 
-* When the parameter is a string starting with `simplebuild-map-`, it's assumed to be a mapper module. The map() function MUST load the module using the Node.js `require()` API call and return an object containing a `map()` function. The map() function must wrap the provided mapper module so that calling `thisModule.map(mapperModule).map(taskModule)` is equivalent to calling `thisModule.map(mapperModule.map(taskModule))`.
+* When the parameter is any other object, it will be considered to be a task module. The `map()` function MUST return a task module object. The tasks SHOULD have different names and/or behavior than the provided task module.
 
-* When the parameter is a string starting with `simplebuild-ext-`, it's assumed to be an extension module. The map() function MUST throw an exception stating that extension modules cannot be mapped.
-
-* When the parameter is any other string, it's assumed to be a task module. The map() function MUST load the module using the Node.js `require()` API call, then proceed as if the parameter had been a task module.
+* When the parameter is a string, it will be considered to be a module name. The `map()` function MUST use the Node.js `require()` API call to load the module, then apply the above rules.
 
 
 Extension Modules

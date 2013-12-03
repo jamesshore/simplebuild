@@ -6,7 +6,7 @@ var Q = require("q");
 
 // Turns every function in a simplebuild module into a promise.
 exports.wrap = function(module) {
-	return simplebuild.mapModule(module, transform);
+	return simplebuild.mapTaskModule(module, transform);
 };
 
 function transform(fn) {

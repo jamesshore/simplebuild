@@ -12,7 +12,10 @@
 	var runningExt = require("./simplebuild-ext-running.js");
 	var barebones = require("./simplebuild-barebones.js");
 
-	barebones = headerExt.map(runningExt.map(barebones));
+	var extensions = require("./simplebuild-ext-header.js")
+		.map("../examples/simplebuild-ext-running.js");
+
+	var barebones = extensions.map(barebones);
 
 	barebones.succeed({}, success, failure);
 	barebones.fail({}, success, failure);

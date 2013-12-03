@@ -4,9 +4,15 @@
 var simplebuild = require("../lib/simplebuild.js");
 
 // A Simplebuild extension that adds a header to Simplebuild modules.
-exports.map = function(module) {
-	return simplebuild.mapModule(module, transform);
-};
+exports.map = simplebuild.createMapFunction(transform);
+
+exports.mapMapper = function(mapperModule) {
+	return {
+		map: function(module) {
+			return exports.map(mapperModule.map(module));
+		}
+	}
+}
 
 function transform(fn) {
 	return function(options, success, failure) {
