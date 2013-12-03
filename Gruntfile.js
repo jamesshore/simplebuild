@@ -18,9 +18,6 @@ module.exports = function(grunt) {
 		}
 	});
 
-	simplebuild.loadNpmTasks("simplebuild-jshint");
-
-
 	grunt.registerTask("default", "Lint and test", ["jshint", "mocha"]);
 
 	grunt.registerTask("jshint", "Lint everything", function() {

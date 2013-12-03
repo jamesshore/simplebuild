@@ -1,7 +1,7 @@
 {
   "name": "simplebuild",
   "version": "0.0.0",
-  "description": "Universal build automation",
+  "description": "Universal task automation",
   "directories": {
     "example": "examples"
   },
