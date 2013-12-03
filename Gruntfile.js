@@ -1,9 +1,6 @@
 // Copyright (c) 2013 Titanium I.T. LLC. All rights reserved. See LICENSE.TXT for details.
 "use strict";
 
-//var jshint = require("./tasks/simplebuild-jshint.js");
-//var mocha = require("./tasks/simplebuild-mocha.js");
-
 module.exports = function(grunt) {
 
 	var simplebuild = require("./extensions/simplebuild-ext-gruntify.js")(grunt);
@@ -23,16 +20,7 @@ module.exports = function(grunt) {
 	simplebuild.loadNpmTasks("./tasks/simplebuild-jshint");
 	simplebuild.loadNpmTasks("./tasks/simplebuild-mocha");
 
-
 	grunt.registerTask("default", "Lint and test", ["JSHint", "Mocha"]);
-
-//	grunt.registerTask("jshint", "Lint everything", function() {
-//		jshint.validate(grunt.config("jshint"), this.async(), grunt.warn);
-//	});
-//
-//	grunt.registerTask("mocha", "Test everything", function() {
-//		mocha.runTests(grunt.config("mocha"), this.async(), grunt.warn);
-//	});
 
 	function lintOptions() {
 		return {
