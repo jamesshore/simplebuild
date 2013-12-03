@@ -2,12 +2,11 @@
 "use strict";
 
 var simplebuild = require("../lib/simplebuild.js");
-var path = require("path");
 
 module.exports = function(grunt) {
 	return {
 		loadNpmTasks: function(moduleName) {
-			var module = require(path.join(process.cwd(), moduleName));
+			var module = require(moduleName);
 			simplebuild.mapTaskModule(module, transform);
 		}
 	};
