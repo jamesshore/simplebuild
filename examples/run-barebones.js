@@ -3,8 +3,12 @@
 	"use strict";
 
 	var extensions = require("./simplebuild-ext-header.js")
+//		.map("../examples/simplebuild-ext-header.js")
+//		.map("../examples/simplebuild-ext-running.js")
+//		.map("../examples/simplebuild-ext-running.js")
 		.map("../examples/simplebuild-ext-running.js");
 
+	console.log("extensions loaded");
 	var barebones = extensions.map("../examples/simplebuild-barebones.js");
 
 	barebones.succeed({}, success, failure);
