@@ -4,9 +4,7 @@
 var simplebuild = require("../lib/simplebuild.js");
 
 // A Simplebuild extension that takes a Simplebuild module and wraps every function in a "running... done" message.
-exports.wrap = function(module) {
-	return simplebuild.mapModule(module, transform);
-};
+exports.map = simplebuild.createMapFunction(transform);
 
 function transform(fn) {
 	return function(options, success, failure) {

@@ -2,15 +2,17 @@
 (function() {
 	"use strict";
 
+//	var extensions = require("./simplebuild-ext-header.js")
+//		.wrap("./simplebuild-ext-running.js");
+//
+//	var barebones = extensions.wrap("./simplebuild-ext-barebones.js");
+
+
+	var headerExt = require("./simplebuild-ext-header.js");
+	var runningExt = require("./simplebuild-ext-running.js");
 	var barebones = require("./simplebuild-barebones.js");
 
-	var runningExt = require("./simplebuild-ext-running.js");
-	var headerExt = require("./simplebuild-ext-header.js");
-
-
-	barebones = headerExt.addHeader(runningExt.wrap(barebones));
-//	barebones = headerExt.addHeader(barebones);
-//	barebones = runningExt.wrap(barebones);
+	barebones = headerExt.map(runningExt.map(barebones));
 
 	barebones.succeed({}, success, failure);
 	barebones.fail({}, success, failure);
