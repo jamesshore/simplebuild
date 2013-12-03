@@ -4,9 +4,7 @@
 var simplebuild = require("../lib/simplebuild.js");
 
 // Adds a Jake-compatible 'task()' function to every function in a simplebuild module.
-exports.wrap = function(module) {
-	return simplebuild.mapTaskModule(module, transform);
-};
+exports.map = simplebuild.createMapFunction(transform);
 
 function transform(fn) {
 	fn.task = function(taskName, dependencies, options) {
