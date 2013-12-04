@@ -1,11 +1,12 @@
 // Copyright (c) 2013 Titanium I.T. LLC. All rights reserved. See LICENSE.TXT for details.
 "use strict";
 
+var simplebuild = require("../lib/simplebuild");
 var Mocha = require("mocha");
 
 exports.runTests = function(options, success, failure) {
 	var mocha = new Mocha({ui: "bdd"});
-	options.files.forEach(function(file) {
+	simplebuild.deglobSync(options.files).forEach(function(file) {
 		mocha.addFile(file);
 	});
 

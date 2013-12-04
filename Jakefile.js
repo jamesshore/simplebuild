@@ -25,7 +25,7 @@ jshint.validate.task("lint", {
 
 desc("Test everything");
 mocha.runTests.task("test", [], {
-	files: ["tasks/jshint/_jshint_runner_test.js"]
+	files: "**/_*_test.js"
 });
 
 desc("Test glob API");
