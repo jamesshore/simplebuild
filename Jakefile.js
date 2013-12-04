@@ -7,6 +7,8 @@ var jakeify = require("./extensions/simplebuild-ext-jakeify.js")
 
 var jshint = jakeify("../tasks/simplebuild-jshint.js");
 var mocha = jakeify("../tasks/simplebuild-mocha.js");
+var globtest = jakeify("../tasks/simplebuild-globtest.js");
+
 
 task("default", ["lint", "test"], function() {
 	console.log("\n\nOK");
@@ -14,7 +16,7 @@ task("default", ["lint", "test"], function() {
 
 desc("Lint everything");
 jshint.validate.task("lint", {
-	files: ["build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js"],
+	files: [ "build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js" ],
 	options: lintOptions(),
 	globals: {}
 });
@@ -23,6 +25,13 @@ desc("Test everything");
 mocha.runTests.task("test", [], {
 	files: ["tasks/jshint/_jshint_runner_test.js"]
 });
+
+desc("Test glob API");
+globtest.log.task("glob", ["default"], {
+//	glob: [ "**/*.js", "!node_modules/**/*" ]
+	glob: [ "**/_*_test.js" ]
+});
+
 
 function lintOptions() {
 	return {
