@@ -9,13 +9,13 @@ var jshint = promisify("../tasks/simplebuild-jshint.js");
 var mocha = promisify("../tasks/simplebuild-mocha.js");
 
 jshint.validate({
-	files: ["build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js"],
+	files: [ "**/*.js", "!node_modules/**/*" ],
 	options: lintOptions(),
 	globals: {}
 })
 .then(function() {
 	return mocha.runTests({
-		files: ["tasks/jshint/_jshint_runner_test.js"]
+		files: "**/_*_test.js"
 	});
 })
 .then(function() {

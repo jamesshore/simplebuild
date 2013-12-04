@@ -7,13 +7,13 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 		JSHint: {
-			files: ["build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js"],
+			files: [ "**/*.js", "!node_modules/**/*" ],
 			options: lintOptions(),
 			globals: {}
 		},
 
 		Mocha: {
-			files: ["tasks/jshint/_jshint_runner_test.js"]
+			files: "**/_*_test.js"
 		}
 	});
 
