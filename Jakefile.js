@@ -9,7 +9,6 @@ var jakeify = require("./extensions/simplebuild-ext-jakeify.js")
 
 var jshint = jakeify("../tasks/simplebuild-jshint.js");
 var mocha = jakeify("../tasks/simplebuild-mocha.js");
-var globtest = jakeify("../tasks/simplebuild-globtest.js");
 
 
 task("default", ["lint", "test"], function() {
@@ -26,12 +25,6 @@ jshint.validate.task("lint", {
 desc("Test everything");
 mocha.runTests.task("test", [], {
 	files: "**/_*_test.js"
-});
-
-desc("Test glob API");
-globtest.log.task("glob", ["default"], {
-//	glob: [ "**/*.js", "!node_modules/**/*" ]
-	glob: [ "**/_*_test.js" ]
 });
 
 
