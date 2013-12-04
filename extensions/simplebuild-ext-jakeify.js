@@ -1,4 +1,6 @@
 // Copyright (c) 2013 Titanium I.T. LLC. All rights reserved. See LICENSE.TXT for details.
+/* globals jake, task, complete, fail */
+
 "use strict";
 
 var simplebuild = require("../lib/simplebuild.js");
@@ -18,7 +20,7 @@ function transform(fn) {
 		task(taskName, dependencies, { async: true }, function() {
 			fn(options, complete, fail);
 		});
-	}
+	};
 
 	return fn;
 }

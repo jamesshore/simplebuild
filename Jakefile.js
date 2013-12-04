@@ -1,4 +1,6 @@
 // Copyright (c) 2013 Titanium I.T. LLC. All rights reserved. See LICENSE.TXT for details.
+/*globals desc, task */
+
 "use strict";
 
 var jakeify = require("./extensions/simplebuild-ext-jakeify.js")
@@ -16,7 +18,7 @@ task("default", ["lint", "test"], function() {
 
 desc("Lint everything");
 jshint.validate.task("lint", {
-	files: [ "build.js", "tasks/simplebuild-jshint.js", "examples/run-barebones.js" ],
+	files: [ "**/*.js", "!node_modules/**/*" ],
 	options: lintOptions(),
 	globals: {}
 });

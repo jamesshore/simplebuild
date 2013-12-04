@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 	function transform(fn) {
 		grunt.registerTask(fn.title, fn.description, function() {
 			fn(grunt.config(fn.title), this.async(), grunt.warn);
-		})
+		});
 		return fn;
 	}
 };

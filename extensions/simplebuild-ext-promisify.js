@@ -13,8 +13,8 @@ function transform(fn) {
 		fn(options, function success() {
 			deferred.resolve();
 		}, function failure(reason) {
-			deferred.reject(reason)
+			deferred.reject(reason);
 		});
 		return deferred.promise;
-	}
+	};
 }

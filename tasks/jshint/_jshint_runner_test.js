@@ -1,4 +1,6 @@
 /* Copyright (c) 2012 James Shore - See README.txt for license */
+/* globals beforeEach, afterEach, describe, it */
+
 "use strict";
 
 var expect = require("expect.js");
