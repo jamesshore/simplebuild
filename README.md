@@ -1,5 +1,14 @@
-Simplebuild - Another way of thinking about build automation
+Simplebuild - Universal Task Automation for Node.js
 ====================
+
+Tools like [Grunt](http://www.gruntjs.com) have powerful and flexible plugin ecosystems, but they only work within their walled garden. If you want to use Grunt plugins in Jake, Jake tasks in Grunt, or write your own tool using an existing plugin... you're out of luck.
+
+What if we had a universal approach to task automation? What if our task libraries worked with *any* tool, but our code was still idiomatic, flexible, and powerful? Imagine how useful that would be.
+
+Simplebuild provides the solution. It's a standard way of *creating* and *plugging together* tasks that works with any tool. It's simple, but powerful; flexible, but idiomatic.
+
+Note: Simplebuild is still in the proof-of-concept stage. Feedback welcome (be kind). Simplebuild is changing rapidly and shouldn't be used for production work yet.
+
 
 Design Goals
 -------
@@ -8,31 +17,171 @@ Design Goals
 
 *Replaceable.* No framework lock-in. You can use Simplebuild modules with any tool, and you can easily replace Simplebuild modules with something else.
 
-*Flexible.* Works with multiple styles of automation (Grunt, Jake, Node callbacks, promises, etc.) and allows you to compose modules to achieve interesting results.
+*Flexible.* Works with multiple styles of automation (Grunt, Jake, promises, etc.) and allows you to compose modules to achieve interesting results.
 
 
-Specification
+Examples
 -------
 
-There are three types of Simplebuild modules:
+The following examples use Simplebuild modules to lint and test some code. Note how Simplebuild adapts to provide clean, idiomatic solutions specific to each tool.
 
-* *Task Modules*. Task modules do the heavy lifting of task automation. For example, the `simplebuild-jshint` module uses JSHint to check files for errors.
+### Grunt
 
-* *Mapper Modules*. Mapper modules modify task modules in some way. They have a `map()` function that takes a module as input and provide a different version of that module as output. For example, the `simplebuild-ext-header` module modifies task modules to print out a header whenever a task runs. Mapper modules can be chained together to achieve multiple effects.
+```javascript
+module.exports = function(grunt) {
+  var simplebuild = require("simplebuild-ext-gruntify.js")(grunt);
 
-* *Extension Modules*. Extension modules might do anything. They typically provide ways of integrating task modules with other approaches. For example, the `simplebuild-ext-promisify` module turns tasks into promises, and the `simplebuild-ext-gruntify` module provides convenience functions for using tasks in Grunt.
+  grunt.initConfig({
+    JSHint: {
+      files: [ "**/*.js", "!node_modules/**/*" ],
+      options: { node: true },
+      globals: {}
+    },
+
+    Mocha: {
+      files: [ "**/_*_test.js", "!node_modules/**/*" ]
+    }
+  });
+
+  simplebuild.loadNpmTasks("simplebuild-jshint");
+  simplebuild.loadNpmTasks("simplebuild-mocha");
+
+  grunt.registerTask("default", "Lint and test", ["JSHint", "Mocha"]);
+};
+```
+
+### Jake
+
+```javascript
+var jakeify = require("simplebuild-ext-jakeify.js").map;
+
+var jshint = jakeify("simplebuild-jshint.js");
+var mocha = jakeify("simplebuild-mocha.js");
+
+task("default", ["lint", "test"]);
+
+desc("Lint everything");
+jshint.validate.task("lint", {
+  files: [ "**/*.js", "!node_modules/**/*" ],
+  options: { node: true },
+  globals: {}
+});
+
+desc("Test everything");
+mocha.runTests.task("test", [], {
+  files: [ "**/_*_test.js", "!node_modules/**/*" ]
+});
+```
+
+### Promises
+
+```javascript
+var promisify = require("simplebuild-ext-promisify.js").map;
+
+var jshint = promisify("simplebuild-jshint.js");
+var mocha = promisify("simplebuild-mocha.js");
+
+jshint.validate({
+  files: [ "**/*.js", "!node_modules/**/*" ],
+  options: { node: true },
+  globals: {}
+})
+.then(function() {
+  return mocha.runTests({
+    files: [ "**/_*_test.js", "!node_modules/**/*" ]
+  });
+})
+.then(function() {
+  console.log("\n\nOK");
+})
+.fail(function(message) {
+  console.log("\n\nFAILED: " + message);
+});
+```
+
+(Note: these examples are slightly simplified. See [Gruntfile.js](Gruntfile.js), [Jakefile.js](Jakefile.js), or [build.js](build.js) for real code.)
 
 
-Task Modules
+Composability
 -------
 
-Task modules export functions that follow a common format. A task module SHOULD have a name starting with "simplebuild-" but not "simplebuild-ext-". (For example, "simplebuild-yourmodule.js".) Task modules MUST export one or more task functions.
+Simplebuild tasks can be used in any Node.js program, so it's easy to create tasks that depend on other tasks. If there's a module that does just what you need, no worries--just `require()` it and use it!
 
-Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Sync()`. These restrictions are case-sensitive. Any other name is permitted. Each task function MUST conform to this signature:
+Simplebuild also supports "mapper modules" that change the way tasks run, and "extension modules" that interface with other tools. For example, the `simplebuild-map-header` module adds a header to tasks, and the `simplebuild-ext-promisify` module converts tasks into promises. Modules can be chained together, providing flexibility and power, without requiring any special programming for tasks.
+
+In this example, a single addition (the second line) adds a header to all tasks:
+
+```javascript
+var promisify = require("simplebuild-ext-promisify.js")
+  .map("simplebuild-map-headers-js")
+  .map;
+
+var jshint = promisify("simplebuild-jshint");
+var mocha = promsifiy("simplebuild-mocha");
+
+jshint.validate({
+  files: [ "**/*.js", "!node_modules/**/*" ],
+  options: { node: true },
+  globals: {}
+})
+.then(function() {
+  return mocha.runTests({
+    files: [ "**/_*_test.js", "!node_modules/**/*" ]
+  });
+})
+.then(function() {
+  console.log("\n\nOK");
+})
+.fail(function(message) {
+  console.log("\n\nFAILED: " + message);
+});
+```
+
+
+How It Works
+-------
+
+Simplebuild's magic is based on standardized, composable function signatures and a very small supporting library. There are three kinds of Simplebuild modules:
+
+* *Task modules* do the heavy lifting of task automation. For example, the `simplebuild-jshint` module uses JSHint to check files for errors. Task modules export functions that follow a standard format: `exports.taskFunction = function(options, successCallback, failureCallback) {...}`. This is the only requirement for Simplebuild tasks, other than some recommended documentation, so they're very easy to create.
+
+* *Mapper modules* take a task module as input and provide a task module as output. (They can also convert other mapper modules, which allows them to be chained together.) They're programmed to provide a generally-useful improvement to task modules. For example, the `simplebuild-map-header` module adds a header to each task. The `createMapFunction()` call in the simplebuild library makes mapper modules easy to create.
+
+* *Extension modules* are like mapper modules, except that they don't have any restrictions on their input or output. They're most often used for compatibility with other coding styles. For example, `simplebuild-ext-promsify` turns Simplebuild tasks into promises, and `simplebuild-ext-gruntify` loads Simplebuild modules into Grunt.
+
+
+Creating Modules
+------
+
+For now, the easiest way to create a module is to copy one of the existing examples:
+
+* Examples of task modules are in the [tasks/](tasks/) directory.
+
+* Examples of mapper modules are in the [mappers/](mappers/) directory.
+
+* Examples of extension modules are in the [stuff/](extensions/) directory. ...Nah, I'm just shitting you. They're in the [extensions/](extensions/) directory.
+
+Eventually, the example modules will be released as standalone npm modules, but that's still in the future.
+
+
+Contributions
+-------
+Contributions, feedback, and discussions are welcome. Please use Github's issue tracker to open issues or pull requests.
+
+
+Formal Specification
+-------
+**[Stability](http://nodejs.org/api/documentation.html#documentation_stability_index): 1 - Experimental**
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this section are to be interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
+
+### Task Modules
+
+Task modules export functions that follow a common format. A task module SHOULD have a name starting with "simplebuild-" but not "simplebuild-map-" or "simplebuild-ext-". (For example, "simplebuild-yourmodule.js".) Task modules MUST export one or more task functions.
+
+Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Sync()`. (These restrictions are case-sensitive.) Any other name is permitted. Each task function MUST conform to this signature:
 
     exports.yourFunction = function(options, success, failure) { ... }
-    exports.yourFunction.title = "Your Name";
-    exports.yourFunction.description = "Your description of the module."
 
 `options` (REQUIRED): Configuration information. Any type of variable may be used, but an object is recommended. Each exported function MAY use this variable to determine what to do.
 
@@ -40,21 +189,29 @@ Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Syn
 
 `failure(messageString)` (REQUIRED): Callback function. Each exported function MUST call failure() with a human-readable explanation when it fails.
 
-`title` (REQUIRED): A human-readable name for the function. It SHOULD be written in title case.
+Task functions MUST NOT return values or throw exceptions. Instead, either `success()` or `failure()` MUST be called exactly once each time a task function is called. It MAY be called synchronously or asynchronously.
 
-`description` (REQUIRED): A human-readable description of the function. It SHOULD be written as a single sentence, starting with a capital letter and ending with a period.
+Each task function SHOULD also have descriptors attached, as follows:
 
-Note: Either success() OR failure() MUST be called exactly once each time an exported function is called. It MAY be called synchronously or asynchronously.
+    exports.yourFunction.title = "Your Name";
+    exports.yourFunction.description = "Your description of the module."
+    exports.yourFunction.options = { ... }
+    exports.yourFunction.defaults = { ... }
 
-Note 2: Exported functions MUST NOT return values or throw exceptions. (Call failure() instead of throwing an exception.)
+`title`: A human-readable name for the function. It SHOULD be written in title case.
+
+`description`: A human-readable description of the function. It SHOULD be written as a single sentence, starting with a capital letter and ending with a period.
+
+`options`: (to be defined -- human-readable description of options)
+
+`defaults`: (to be defined -- defaults used when an option is left blank)
 
 
-Mapper Modules
-------
+### Mapper Modules
 
 Mapper modules export a single function, `map()`, that transforms a Simplebuild module in some way. A mapper module SHOULD have a name starting with `simplebuild-map-`. (For example, `simplebuild-map-yourmapper.js`.)
 
-Mapper modules SHOULD use the `createMapFunction()` API call, defined in the `simplebuild` module, to create the `map()` function. Mapper modules MUST NOT export any other functions other than `map()`. The transformation applied within the `map()` function SHOULD NOT have any side effects.
+Mapper modules SHOULD use the `createMapFunction()` API call, defined in the `simplebuild` module, to create the `map()` function. Mapper modules MUST export only one function, named `map()`. The `map()` function call itself SHOULD NOT have any side effects, but the functions `map()` returns MAY have side effects.
 
 The `map()` function MUST take a single parameter and return an object, as follows. These requirements are handled automatically by `createMapFunction()`.
 
@@ -65,9 +222,39 @@ The `map()` function MUST take a single parameter and return an object, as follo
 * When the parameter is a string, it will be considered to be an npm module. In this case, the `map()` function MUST use the Node.js `require()` API call to load the module, then apply the above rules.
 
 
-Extension Modules
-------
+### Extension Modules
 
 Extension modules extend the capabilities of Simplebuild. An extension module SHOULD have a name starting with "simplebuild-ext-" (for example, "simplebuild-ext-yourextension.js").
 
-Extension modules MAY export any number of functions with any signature. Exported functions MAY do anything, including accepting other Simplebuild modules as parameters. When a function supports loading task modules by name, it SHOULD also support mapper modules as well. The `createMapFunction` API call defined in the `simplebuild` function may be helpful here.
+Extension modules MAY export any number of functions with any signature. Exported functions MAY do anything, including accepting other Simplebuild modules as parameters. When a function supports loading task modules by name, it SHOULD also support mapper modules as well. The `createMapFunction` API call defined in the `simplebuild` module may be helpful here.
+
+
+Credits
+-------
+Simplebuild is a project of [Let's Code: Test-Driven JavaScript](http://www.letscodejavascript.com), a screencast on professional, rigorous JavaScript development. Created by James Shore.
+
+
+License
+-------
+The MIT License (MIT)
+
+Copyright (c) 2013 James Shore
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
