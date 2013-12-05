@@ -1,7 +1,7 @@
 Simplebuild - Universal Task Automation for Node.js
 ====================
 
-Tools like [Grunt](http://www.gruntjs.com) have powerful and flexible plugin ecosystems, but they only work within their walled garden. If you want to use Grunt plugins in Jake, Jake tasks in Grunt, or write your own tool using an existing plugin... you're out of luck.
+Tools like [Grunt](http://www.gruntjs.com) have powerful and flexible plugin ecosystems, but they only work within their walled garden. If you want to use Grunt plugins in [Jake](https://github.com/mde/jake), Jake tasks in Grunt, or write your own tool using an existing plugin... you're out of luck.
 
 What if we had a universal approach to task automation? What if our task libraries worked with *any* tool, but our code was still idiomatic, flexible, and powerful? Imagine how useful that would be.
 
