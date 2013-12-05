@@ -136,12 +136,12 @@ build.js ok                     Gruntfile.js ok
   19 passing (44ms)             Mocha
                                 =====
 
-OK                                  ...................
+OK                                ...................
 
                                   19 passing (44ms)
 
 
-                                  OK
+                                OK
 ```
 
 
