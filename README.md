@@ -107,7 +107,7 @@ Composability
 
 Simplebuild tasks can be used in any Node.js program, so it's easy to create tasks that depend on other tasks. If there's a module that does just what you need, no worries--just `require()` it and use it!
 
-Simplebuild also supports "mapper modules" that change the way tasks run, and "extension modules" that interface with other tools. For example, the `simplebuild-map-header` module adds a header to tasks, and the `simplebuild-ext-promisify` module converts tasks into promises. Modules can be chained together, providing flexibility and power, without requiring any special programming for tasks.
+Simplebuild also supports "mapper modules" that change the way tasks run, and "extension modules" that interface with other tools. For example, the `simplebuild-map-header` module adds a header to tasks, and the `simplebuild-ext-promisify` module converts tasks into promises. Modules can be chained together, providing flexibility and power, without requiring any special programming in the tasks.
 
 In this example, a single addition (the second line) to the "Promises" example above adds a header to all tasks:
 
