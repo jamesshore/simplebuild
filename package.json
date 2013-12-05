@@ -2,6 +2,10 @@
   "name": "simplebuild",
   "version": "0.1.0",
   "description": "Universal task automation",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jamesshore/simplebuild.git"
+	},
   "directories": {
     "example": "examples"
   },
