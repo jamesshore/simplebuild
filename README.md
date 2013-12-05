@@ -109,7 +109,7 @@ Simplebuild tasks can be used in any Node.js program, so it's easy to create tas
 
 Simplebuild also supports "mapper modules" that change the way tasks run, and "extension modules" that interface with other tools. For example, the `simplebuild-map-header` module adds a header to tasks, and the `simplebuild-ext-promisify` module converts tasks into promises. Modules can be chained together, providing flexibility and power, without requiring any special programming for tasks.
 
-In this example, a single addition (the second line) adds a header to all tasks:
+In this example, a single addition (the second line) to the "Promises" example above adds a header to all tasks:
 
 ```javascript
 var promisify = require("simplebuild-ext-promisify.js")
@@ -118,23 +118,29 @@ var promisify = require("simplebuild-ext-promisify.js")
 
 var jshint = promisify("simplebuild-jshint");
 var mocha = promsifiy("simplebuild-mocha");
+...
+```
 
-jshint.validate({
-  files: [ "**/*.js", "!node_modules/**/*" ],
-  options: { node: true },
-  globals: {}
-})
-.then(function() {
-  return mocha.runTests({
-    files: [ "**/_*_test.js", "!node_modules/**/*" ]
-  });
-})
-.then(function() {
-  console.log("\n\nOK");
-})
-.fail(function(message) {
-  console.log("\n\nFAILED: " + message);
-});
+Output:
+
+```
+Before:                         After:
+
+Gruntfile.js ok                 JSHint
+Jakefile.js ok                  ======
+build.js ok                     Gruntfile.js ok
+...                             Jakefile.js ok
+								build.js ok
+  ․․․․․․․․․․․․․․․․․․․
+								Mocha
+  19 passing (44ms)             =====
+
+                                  ...................
+OK
+                                  19 passing (44ms)
+
+
+                                  OK
 ```
 
 
