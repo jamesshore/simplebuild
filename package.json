@@ -21,7 +21,7 @@
     "expect.js": "~0.2.0",
     "jake": "~0.7.6",
     "grunt": "~0.4.2",
-    "grunt-cli": "~0.1.11",
+    "grunt-cli": "~0.1.11"
   },
   "dependencies": {
     "q": "~0.9.7",
