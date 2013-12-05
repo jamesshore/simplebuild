@@ -4,7 +4,7 @@
 "use strict";
 
 var jakeify = require("./extensions/simplebuild-ext-jakeify.js")
-	.map("../examples/simplebuild-ext-header.js")
+	.map("../mappers/simplebuild-map-header.js")
 	.map;
 
 var jshint = jakeify("../tasks/simplebuild-jshint.js");

@@ -2,7 +2,7 @@
 "use strict";
 
 var promisify = require("./extensions/simplebuild-ext-promisify.js")
-	.map("../examples/simplebuild-ext-header.js")
+	.map("../mappers/simplebuild-map-header.js")
 	.map;
 
 var jshint = promisify("../tasks/simplebuild-jshint.js");
