@@ -113,7 +113,7 @@ In this example, a single addition (the second line) to the "Promises" example a
 
 ```javascript
 var promisify = require("simplebuild-ext-promisify.js")
-  .map("simplebuild-map-headers-js")
+  .map("simplebuild-map-header.js")
   .map;
 
 var jshint = promisify("simplebuild-jshint");
