@@ -1,6 +1,6 @@
 {
   "name": "simplebuild",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Universal task automation",
   "directories": {
     "example": "examples"
@@ -10,11 +10,11 @@
   },
   "keywords": [
     "build",
-    "tasks",
+    "task",
     "automation"
   ],
   "author": "James Shore",
-  "license": "BSD-2-Clause",
+  "license": "MIT",
   "devDependencies": {
     "jshint": "~2.3.0",
     "mocha": "~1.15.0",

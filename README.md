@@ -23,7 +23,7 @@ Design Goals
 Examples
 -------
 
-The following examples use Simplebuild modules to lint and test some code. Note how Simplebuild adapts to provide clean, idiomatic solutions specific to each tool.
+The following examples use Simplebuild modules to lint and test some code. Note how Simplebuild adapts to provide clean, idiomatic solutions for each tool.
 
 ### Grunt
 
@@ -153,7 +153,7 @@ Simplebuild's magic is based on standardized, composable function signatures and
 Creating Modules
 ------
 
-For now, the easiest way to create a module is to copy one of the existing examples:
+For now, the easiest way to create a Simplebuild module is to copy one of the existing examples:
 
 * Examples of task modules are in the [tasks/](tasks/) directory.
 
@@ -166,7 +166,10 @@ Eventually, the example modules will be released as standalone npm modules, but 
 
 Contributions
 -------
+
 Contributions, feedback, and discussions are welcome. Please use Github's issue tracker to open issues or pull requests.
+
+**Known issues**: This is still very experimental, proof-of-concept stuff. The core `simplebuild` library is likely to see a lot of changes, the spec is likely to change and improve, and there aren't any tests yet.
 
 
 Formal Specification
