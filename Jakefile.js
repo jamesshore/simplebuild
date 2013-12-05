@@ -24,7 +24,7 @@ jshint.validate.task("lint", {
 
 desc("Test everything");
 mocha.runTests.task("test", [], {
-	files: "**/_*_test.js"
+	files: [ "**/_*_test.js", "!node_modules/**/*" ]
 });
 
 

@@ -15,7 +15,7 @@ jshint.validate({
 })
 .then(function() {
 	return mocha.runTests({
-		files: "**/_*_test.js"
+		files: [ "**/_*_test.js", "!node_modules/**/*" ]
 	});
 })
 .then(function() {

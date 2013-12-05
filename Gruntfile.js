@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 		},
 
 		Mocha: {
-			files: "**/_*_test.js"
+			files: [ "**/_*_test.js", "!node_modules/**/*" ]
 		}
 	});
 
