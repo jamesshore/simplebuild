@@ -131,12 +131,13 @@ Jakefile.js ok                  ======
 build.js ok                     Gruntfile.js ok
 ...                             Jakefile.js ok
 								build.js ok
-  ․․․․․․․․․․․․․․․․․․․
-								Mocha
-  19 passing (44ms)             =====
+  ․․․․․․․․․․․․․․․․․․․           ...
 
-                                  ...................
-OK
+  19 passing (44ms)             Mocha
+                                =====
+
+OK                                  ...................
+
                                   19 passing (44ms)
 
 
