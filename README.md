@@ -129,14 +129,14 @@ Before:                         After:
 Gruntfile.js ok                 JSHint
 Jakefile.js ok                  ======
 build.js ok                     Gruntfile.js ok
-...                             Jakefile.js ok
+    ⋮                           Jakefile.js ok
 								build.js ok
-  ․․․․․․․․․․․․․․․․․․․           ...
+  ․․․․․․․․․․․․․․․․․․․               ⋮
 
   19 passing (44ms)             Mocha
                                 =====
 
-OK                                ...................
+OK                                ․․․․․․․․․․․․․․․․․․․
 
                                   19 passing (44ms)
 
