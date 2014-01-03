@@ -187,7 +187,7 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 ### Task Modules
 
-Task modules export functions that follow a common format. A task module SHOULD have a name starting with "simplebuild-" but not "simplebuild-map-" or "simplebuild-ext-". (For example, "simplebuild-yourmodule.js".) Task modules MUST export one or more task functions.
+Task modules export functions that follow a common format. A task module SHOULD have a name starting with "simplebuild-" but not "simplebuild-map-" or "simplebuild-ext-". (For example, "simplebuild-yourmodule.js".) All functions exported by a task module MUST be task functions.
 
 Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Sync()`. (These restrictions are case-sensitive.) Any other name is permitted. Each task function MUST conform to this signature:
 
@@ -197,24 +197,34 @@ Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Syn
 
 `success()` (REQUIRED): Callback function. Each exported function MUST call success() with no parameters when it finishes successfully.
 
-`failure(messageString)` (REQUIRED): Callback function. Each exported function MUST call failure() with a human-readable explanation when it fails.
-
-Task functions MUST NOT return values or throw exceptions. Instead, either `success()` or `failure()` MUST be called exactly once each time a task function is called. It MAY be called synchronously or asynchronously.
+`failure(messageString)` (REQUIRED): Callback function. Each exported function MUST call failure() with a brief human-readable explanation when it fails. The explanation SHOULD be less than 50 characters.
 
 Each task function SHOULD also have descriptors attached, as follows:
 
     exports.yourFunction.title = "Your Name";
     exports.yourFunction.description = "Your description of the module."
-    exports.yourFunction.options = { ... }
-    exports.yourFunction.defaults = { ... }
+    exports.yourFunction.options = { ... }  // TBD
+    exports.yourFunction.defaults = { ... }  // TBD
 
-`title`: A human-readable name for the function. It SHOULD be written in title case.
+`title`: A human-readable name for the function. It SHOULD be written in title case. It SHOULD be less than 22 characters.
 
-`description`: A human-readable description of the function. It SHOULD be written as a single sentence, starting with a capital letter and ending with a period.
+`description`: A human-readable description of the function. It SHOULD be written as a single sentence, starting with a capital letter and ending with a period. It SHOULD be less than 50 characters.
 
 `options`: (to be defined -- human-readable description of options)
 
 `defaults`: (to be defined -- defaults used when an option is left blank)
+
+#### Task Behavior
+
+Task functions MUST NOT return values or throw exceptions. Instead, either the `success()` or `failure()` callback MUST be called exactly once when the task is complete. The callback MAY be called synchronously or asynchronously.
+
+Tasks that fail SHOULD provide a detailed explanation suitable for debugging the problem. If the explanation is too long to fit in the 50-character failure mesage, the task SHOULD write the details to `process.stdout` before failing. (Note that calling `console.log()` is a convenient way of writing to `process.stdout`.)
+
+Tasks that succeed SHOULD NOT write to `process.stdout` by default. They MAY write more if configured to do so with the `options` parameter.
+
+Tasks that are slow or long-running MAY provide minimalistic progress output (such as periods) but SHOULD NOT provide more detailed information by default. They MAY write more if configured to do so with the `options` parameter.
+
+Tasks SHOULD NOT write to `process.stderr` under any circumstances.
 
 
 ### Mapper Modules
