@@ -25,6 +25,8 @@ Examples
 
 The following examples use Simplebuild modules to lint and test some code. Note how Simplebuild adapts to provide clean, idiomatic solutions for each tool.
 
+(Note: these examples are slightly simplified. See [Gruntfile.js](Gruntfile.js), [Jakefile.js](Jakefile.js), or [build.js](build.js) for real code.)
+
 ### Grunt
 
 ```javascript
@@ -99,7 +101,18 @@ jshint.validate({
 });
 ```
 
-(Note: these examples are slightly simplified. See [Gruntfile.js](Gruntfile.js), [Jakefile.js](Jakefile.js), or [build.js](build.js) for real code.)
+### Running the examples
+
+Before running the examples:
+
+1. Install Node.js
+2. Download the project code
+3. Open a command prompt in the project's root directory
+4. Run `npm install` to install dependencies
+
+To run the examples:
+
+1. Run `node build.js`, `./grunt.sh`, or `./jake.sh`. (Windows users, use `node build.js`, `node_modules\.bin\grunt`, or `node_modules\.bin\jake`.)
 
 
 Composability
