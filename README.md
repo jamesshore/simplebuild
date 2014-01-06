@@ -262,6 +262,12 @@ Extension modules extend the capabilities of Simplebuild. An extension module SH
 Extension modules MAY export any number of functions with any signature. Exported functions MAY do anything, including accepting other Simplebuild modules as parameters. When a function supports loading task modules by name, it SHOULD also support mapper modules as well. The `createMapFunction` API call defined in the `simplebuild` module may be helpful here.
 
 
+To Do
+-----
+Things that still need work:
+
+- When creating a module, the options and parameters need a lot of checking. Writing tests for this behavior is particularly tedious and repetitive.
+
 Credits
 -------
 Simplebuild is a project of [Let's Code: Test-Driven JavaScript](http://www.letscodejavascript.com), a screencast on professional, rigorous JavaScript development. Created by James Shore.
