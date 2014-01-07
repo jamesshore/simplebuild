@@ -1,12 +1,12 @@
 {
   "name": "simplebuild",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Universal task automation",
-	"main": "lib/simplebuild.js",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/jamesshore/simplebuild.git"
-	},
+  "main": "lib/simplebuild.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamesshore/simplebuild.git"
+  },
   "directories": {
     "example": "examples"
   },
