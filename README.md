@@ -267,6 +267,13 @@ To Do
 Things that still need work:
 
 - When creating a module, the options and parameters need a lot of checking. Writing tests for this behavior is particularly tedious and repetitive.
+- Should messages be written to stderr instead of stdout?
+
+
+Version History
+---------------
+* 0.2.0: Fleshed out spec further, made library work as proper npm module
+* 0.1.0: Initial release
 
 Credits
 -------
