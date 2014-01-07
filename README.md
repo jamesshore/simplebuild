@@ -268,6 +268,7 @@ Things that still need work:
 
 - When creating a module, the options and parameters need a lot of checking. Writing tests for this behavior is particularly tedious and repetitive.
 - Should messages be written to stderr instead of stdout?
+- Could creation of modules' readme file be automated, particularly the "usage" and "examples" sections?
 
 
 Version History
@@ -284,7 +285,7 @@ License
 -------
 The MIT License (MIT)
 
-Copyright (c) 2013 James Shore
+Copyright (c) 2013-2014 James Shore
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
