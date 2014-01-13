@@ -212,12 +212,14 @@ Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Syn
 
 `failure(messageString)` (REQUIRED): Callback function. Each exported function MUST call failure() with a brief human-readable explanation when it fails. The explanation SHOULD be less than 50 characters.
 
-Each task function SHOULD also have descriptors attached, as follows:
+Each task function SHOULD also a `descriptors` object attached, as follows:
 
-    exports.yourFunction.title = "Your Name";
-    exports.yourFunction.description = "Your description of the module."
-    exports.yourFunction.options = { ... }  // TBD
-    exports.yourFunction.defaults = { ... }  // TBD
+    exports.yourFunction.descriptors = {
+        title: "Your name",
+        description: "Your description of the module",
+        options: { ... }  // TBD
+        defaults: { ... }  // TBD
+    };
 
 `title`: A human-readable name for the function. It SHOULD be written in title case. It SHOULD be less than 22 characters.
 
@@ -273,6 +275,7 @@ Things that still need work:
 
 Version History
 ---------------
+* 0.3.0: Reworked descriptors
 * 0.2.0: Fleshed out spec further, made library work as proper npm module
 * 0.1.0: Initial release
 
