@@ -215,15 +215,15 @@ Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Syn
 Each task function SHOULD also a `descriptors` object attached, as follows:
 
     exports.yourFunction.descriptors = {
-        title: "Your name",
-        description: "Your description of the module",
+        title: "The Task Name",
+        documentation: "A detailed description of the task function. Markdown may be used."
         options: { ... }  // TBD
         defaults: { ... }  // TBD
     };
 
-`title`: A human-readable name for the function. It SHOULD be written in title case. It SHOULD be less than 22 characters.
+`title`: A human-readable name for the function. It SHOULD be written in title case. It SHOULD be less than 22 characters. It MUST NOT be written in Markdown or any other markup language.
 
-`description`: A human-readable description of the function. It SHOULD be written as a single sentence, starting with a capital letter and ending with a period. It SHOULD be less than 50 characters.
+`description`: A detailed, human-readable description of the function. The first sentence SHOULD be less than 50 characters and provide a summary description of the function. The rest of the description may be of any length and SHOULD completely describe the function. It MUST be written in Github-flavored Markdown.
 
 `options`: (to be defined -- human-readable description of options)
 
@@ -268,9 +268,13 @@ To Do
 -----
 Things that still need work:
 
+Change before release:
+- Modify examples to use new descriptor spec
+
 - When creating a module, the options and parameters need a lot of checking. Writing tests for this behavior is particularly tedious and repetitive.
 - Should messages be written to stderr instead of stdout?
 - Could creation of modules' readme file be automated, particularly the "usage" and "examples" sections?
+- Pull `__test_files.js` out of simplebuild-jshint into its own module or helper
 
 
 Version History
