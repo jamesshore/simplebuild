@@ -279,7 +279,7 @@ Change before release:
 - Should messages be written to stderr instead of stdout?
 - Could creation of modules' readme file be automated, particularly the "usage" and "examples" sections?
 - Pull `__test_files.js` out of simplebuild-jshint into its own module or helper
-
+- Pull `expectSuccess()` and `expectFailure()` out of simplebuild-jshint (_index_test.js)
 
 Version History
 ---------------
