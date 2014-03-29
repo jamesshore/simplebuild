@@ -232,18 +232,22 @@ Each task function SHOULD also a `descriptors` object attached, as follows:
 
     exports.yourFunction.descriptors = {
         title: "The Task Name",
-        description: "A detailed description of the task function. Markdown may be used."
-        options: { ... }  // TBD
-        defaults: { ... }  // TBD
+        description: "A detailed description of the task function. Markdown may be used.",
+        options: { ... }  // see below
     };
 
 `title`: A human-readable name for the function. It SHOULD be written in title case. It SHOULD be less than 22 characters. It MUST NOT be written in Markdown or any other markup language.
 
 `description`: A detailed, human-readable description of the function. The first sentence SHOULD be less than 50 characters and provide a summary description of the function. The rest of the description may be of any length and SHOULD completely describe the function. It MUST be written in Github-flavored Markdown.
 
-`options`: (to be defined -- human-readable description of options)
+`options`: An object describing the possible values for the task's `options` parameter. Every property that is permitted in the `options` parameter should have a corresponding property in this descriptor. The key MUST be identical to the key used in the actual options parameter, and the value MUST be an object, as follows:
 
-`defaults`: (to be defined -- defaults used when an option is left blank)
+    exports.yourFunction.descriptors.options.<key> = {
+        description: "A detailed description of the option. Markdown may be used."
+        // Note: future versions of this specification are likely to add additional option descriptors.
+    };
+
+`options.<key>.description`: A detailed, human-readable description of the option. The first sentence SHOULD be less than 50 characters and provide a summary description of the option. The rest of the description may be of any length and SHOULD completely describe the option. It MUST be written in Github-flavored Markdown.
 
 
 ### Mapper Modules
