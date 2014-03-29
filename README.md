@@ -275,7 +275,7 @@ Things that still need work:
 Change before release:
 - Modify examples to use new descriptor spec
 
-- When creating a module, the options and parameters need a lot of checking. Writing tests for this behavior is particularly tedious and repetitive.
+- When creating a module, the options and parameters need a lot of checking in `index.js`. Writing tests for this behavior is particularly tedious and repetitive. Create helper methods for this that take advantage of descriptors.
 - Should messages be written to stderr instead of stdout?
 - Could creation of modules' readme file be automated, particularly the "usage" and "examples" sections?
 - Pull `__test_files.js` out of simplebuild-jshint into its own module or helper
@@ -283,7 +283,7 @@ Change before release:
 
 Version History
 ---------------
-* 0.3.0: Reworked descriptors
+* 0.3.0 (in progress): Reworked descriptors
 * 0.2.0: Fleshed out spec further, made library work as proper npm module
 * 0.1.0: Initial release
 
