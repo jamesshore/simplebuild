@@ -226,21 +226,6 @@ Tasks that are slow or long-running MAY provide minimalistic progress output (su
 Tasks SHOULD NOT write to `process.stderr` under any circumstances.
 
 
-#### Module Descriptors
-
-The module SHOULD have a `descriptors` object attached, as follows:
-
-    exports.descriptors = {
-        name: "modulename",
-        summary: "A short summary of the module's purpose. Markdown may be used.",
-        description: "A detailed description of the module's purpose. Markdown may be used."
-    };
-
-`name`: The name of the module. It MUST be the name used by npm.
-`summary`: A brief, human-readable summary of the module. It MUST be written in Github-flavored Markdown.
-`description`: More details about the module. It MUST be written in Github-flavored Markdown.
-
-
 #### Task Descriptors
 
 Each task function SHOULD also a `descriptors` object attached, as follows:
