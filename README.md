@@ -287,7 +287,7 @@ Change before release:
 
 Version History
 ---------------
-* 0.3.0 (in progress): Reworked descriptors
+* 0.3.0: Reworked descriptors
 * 0.2.0: Fleshed out spec further, made library work as proper npm module
 * 0.1.0: Initial release
 
