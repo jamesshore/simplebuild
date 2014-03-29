@@ -212,22 +212,6 @@ Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Syn
 
 `failure(messageString)` (REQUIRED): Callback function. Each exported function MUST call failure() with a brief human-readable explanation when it fails. The explanation SHOULD be less than 50 characters.
 
-Each task function SHOULD also a `descriptors` object attached, as follows:
-
-    exports.yourFunction.descriptors = {
-        title: "The Task Name",
-        documentation: "A detailed description of the task function. Markdown may be used."
-        options: { ... }  // TBD
-        defaults: { ... }  // TBD
-    };
-
-`title`: A human-readable name for the function. It SHOULD be written in title case. It SHOULD be less than 22 characters. It MUST NOT be written in Markdown or any other markup language.
-
-`description`: A detailed, human-readable description of the function. The first sentence SHOULD be less than 50 characters and provide a summary description of the function. The rest of the description may be of any length and SHOULD completely describe the function. It MUST be written in Github-flavored Markdown.
-
-`options`: (to be defined -- human-readable description of options)
-
-`defaults`: (to be defined -- defaults used when an option is left blank)
 
 #### Task Behavior
 
@@ -240,6 +224,41 @@ Tasks that succeed SHOULD NOT write to `process.stdout` by default. They MAY wri
 Tasks that are slow or long-running MAY provide minimalistic progress output (such as periods) but SHOULD NOT provide more detailed information by default. They MAY write more if configured to do so with the `options` parameter.
 
 Tasks SHOULD NOT write to `process.stderr` under any circumstances.
+
+
+#### Module Descriptors
+
+The module SHOULD have a `descriptors` object attached, as follows:
+
+    exports.descriptors = {
+        name: "modulename",
+        summary: "A short summary of the module's purpose. Markdown may be used.",
+        description: "A detailed description of the module's purpose. Markdown may be used."
+    };
+
+`name`: The name of the module. It MUST be the name used by npm.
+`summary`: A brief, human-readable summary of the module. It MUST be written in Github-flavored Markdown.
+`description`: More details about the module. It MUST be written in Github-flavored Markdown.
+
+
+#### Task Descriptors
+
+Each task function SHOULD also a `descriptors` object attached, as follows:
+
+    exports.yourFunction.descriptors = {
+        title: "The Task Name",
+        description: "A detailed description of the task function. Markdown may be used."
+        options: { ... }  // TBD
+        defaults: { ... }  // TBD
+    };
+
+`title`: A human-readable name for the function. It SHOULD be written in title case. It SHOULD be less than 22 characters. It MUST NOT be written in Markdown or any other markup language.
+
+`description`: A detailed, human-readable description of the function. The first sentence SHOULD be less than 50 characters and provide a summary description of the function. The rest of the description may be of any length and SHOULD completely describe the function. It MUST be written in Github-flavored Markdown.
+
+`options`: (to be defined -- human-readable description of options)
+
+`defaults`: (to be defined -- defaults used when an option is left blank)
 
 
 ### Mapper Modules
