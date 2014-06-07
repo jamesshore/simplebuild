@@ -274,14 +274,21 @@ Extension modules MAY export any number of functions with any signature. Exporte
 
 To Do
 -----
-Things that still need work:
+Current project:
+- Implement simplebuild-mocha and use it to drive improvements to simplebuild core
+
+Where I left off:
+- Factored stdout/stderr testing into test-console
+
+What's next:
+- Factor `__test_files` into its own module?
 
 Change before release:
 - Modify examples to use new descriptor spec
 
+Things that still need work:
 - When creating a module, the options and parameters need a lot of checking in `index.js`. Writing tests for this behavior is particularly tedious and repetitive. Create helper methods for this that take advantage of descriptors.
-- Should messages be written to stderr instead of stdout?
-- Could creation of modules' readme file be automated, particularly the "usage" and "examples" sections?
+- Should messages be written to stderr instead of stdout? Or perhaps some sort of 'reporter' spec
 - Pull `__test_files.js` out of simplebuild-jshint into its own module or helper
 - Pull `expectSuccess()` and `expectFailure()` out of simplebuild-jshint (_index_test.js)
 
