@@ -274,14 +274,6 @@ Extension modules MAY export any number of functions with any signature. Exporte
 
 To Do
 -----
-Current project:
-- Implement simplebuild-mocha and use it to drive improvements to simplebuild core
-
-Where I left off:
-- Factored stdout/stderr testing into test-console
-
-What's next:
-- Factor `__test_files` into its own module?
 
 Change before release:
 - Modify examples to use new descriptor spec
@@ -294,6 +286,7 @@ Things that still need work:
 
 Version History
 ---------------
+* 0.4.0: Removed descriptors
 * 0.3.0: Reworked descriptors
 * 0.2.0: Fleshed out spec further, made library work as proper npm module
 * 0.1.0: Initial release
