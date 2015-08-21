@@ -3,12 +3,12 @@
 
 "use strict";
 
-var jakeify = require("./extensions/simplebuild-ext-jakeify.js")
-	.map("../mappers/simplebuild-map-header.js")
+var jakeify = require("./examples/extensions/simplebuild-ext-jakeify.js")
+	.map("../examples/mappers/simplebuild-map-header.js")
 	.map;
 
-var jshint = jakeify("../tasks/simplebuild-jshint.js");
-var mocha = jakeify("../tasks/simplebuild-mocha.js");
+var jshint = jakeify("../examples/tasks/simplebuild-jshint.js");
+var mocha = jakeify("../examples/tasks/simplebuild-mocha.js");
 
 
 task("default", ["lint", "test"], function() {

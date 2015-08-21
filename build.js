@@ -3,12 +3,12 @@
 // Copyright (c) 2013 Titanium I.T. LLC. All rights reserved. See LICENSE.TXT for details.
 "use strict";
 
-var promisify = require("./extensions/simplebuild-ext-promisify.js")
-	.map("../mappers/simplebuild-map-header.js")
+var promisify = require("./examples/extensions/simplebuild-ext-promisify.js")
+	.map("../examples/mappers/simplebuild-map-header.js")
 	.map;
 
-var jshint = promisify("../tasks/simplebuild-jshint.js");
-var mocha = promisify("../tasks/simplebuild-mocha.js");
+var jshint = promisify("../examples/tasks/simplebuild-jshint.js");
+var mocha = promisify("../examples/tasks/simplebuild-mocha.js");
 
 jshint.validate({
 	files: [ "**/*.js", "!node_modules/**/*" ],

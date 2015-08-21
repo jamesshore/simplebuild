@@ -1,7 +1,7 @@
 // Copyright (c) 2013 Titanium I.T. LLC. All rights reserved. See LICENSE.txt for details.
 "use strict";
 
-var simplebuild = require("../lib/simplebuild.js");
+var simplebuild = require("../../lib/simplebuild.js");
 var jshint = require("./jshint/jshint_runner.js");
 
 exports.validate = function(options, success, failure) {

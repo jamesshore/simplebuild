@@ -3,7 +3,7 @@
 
 module.exports = function(grunt) {
 
-	var simplebuild = require("./extensions/simplebuild-ext-gruntify.js")(grunt);
+	var simplebuild = require("./examples/extensions/simplebuild-ext-gruntify.js")(grunt);
 
 	grunt.initConfig({
 		JSHint: {

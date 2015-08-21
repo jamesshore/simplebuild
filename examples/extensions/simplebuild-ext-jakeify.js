@@ -3,7 +3,7 @@
 
 "use strict";
 
-var simplebuild = require("../lib/simplebuild.js");
+var simplebuild = require("../../lib/simplebuild.js");
 
 // Adds a Jake-compatible 'task()' function to every function in a simplebuild module.
 exports.map = simplebuild.createMapFunction(transform);

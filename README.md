@@ -170,20 +170,6 @@ Simplebuild's magic is based on standardized, composable function signatures and
 * *Extension modules* are like mapper modules, except that they don't have any restrictions on their input or output. They're most often used for compatibility with other coding styles. For example, `simplebuild-ext-promsify` turns Simplebuild tasks into promises, and `simplebuild-ext-gruntify` loads Simplebuild modules into Grunt.
 
 
-Creating Modules
-------
-
-For now, the easiest way to create a Simplebuild module is to copy one of the existing examples:
-
-* Examples of task modules are in the [tasks/](tasks/) directory.
-
-* Examples of mapper modules are in the [mappers/](mappers/) directory.
-
-* Examples of extension modules are in the [stuff/](extensions/) directory. ...Nah, I'm just shitting you. They're in the [extensions/](extensions/) directory.
-
-Eventually, the example modules will be released as standalone npm modules, but that's still in the future.
-
-
 Contributions
 -------
 
