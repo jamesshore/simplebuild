@@ -206,16 +206,16 @@ Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Syn
 
     exports.yourFunction = function(options, success, failure) { ... }
 
-`options` (REQUIRED): Configuration information. Any type of variable may be used, but an object is recommended. Each exported function MAY use this variable to determine what to do.
+`options` (REQUIRED): Configuration information. Any type of variable may be used, but an object is recommended. If a task function has no configuration, this variable is still required, but may be ignored.
 
-`success()` (REQUIRED): Callback function. Each exported function MUST call success() with no parameters when it finishes successfully.
+`success()` (REQUIRED): Callback function. Each task function MUST call success() with no parameters when it finishes successfully.
 
-`failure(messageString)` (REQUIRED): Callback function. Each exported function MUST call failure() with a brief human-readable explanation when it fails. The explanation SHOULD be less than 50 characters.
+`failure(messageString)` (REQUIRED): Callback function. Each task function MUST call failure() with a brief human-readable explanation when it fails. The explanation SHOULD be less than 50 characters.
 
 
 #### Task Behavior
 
-Task functions MUST NOT return values or throw exceptions. Instead, either the `success()` or `failure()` callback MUST be called exactly once when the task is complete. The callback MAY be called synchronously or asynchronously.
+Task functions MUST NOT return values or throw exceptions. Instead, either the `success()` or `failure()` callback MUST be called exactly once when the task is complete. The callback may be called synchronously or asynchronously.
 
 Tasks that fail SHOULD provide a detailed explanation suitable for debugging the problem. If the explanation is too long to fit in the 50-character failure mesage, the task SHOULD write the details to `process.stdout` before failing. (Note that calling `console.log()` is a convenient way of writing to `process.stdout`.)
 
@@ -226,35 +226,11 @@ Tasks that are slow or long-running MAY provide minimalistic progress output (su
 Tasks SHOULD NOT write to `process.stderr` under any circumstances.
 
 
-#### Task Descriptors
-
-Each task function SHOULD also a `descriptors` object attached, as follows:
-
-    exports.yourFunction.descriptors = {
-        title: "The Task Name",
-        description: "A detailed description of the task function. Markdown may be used.",
-        options: { ... }  // see below
-    };
-
-`title`: A human-readable name for the function. It SHOULD be written in title case. It SHOULD be less than 22 characters. It MUST NOT be written in Markdown or any other markup language.
-
-`description`: A detailed, human-readable description of the function. The first sentence SHOULD be less than 50 characters and provide a summary description of the function. The rest of the description may be of any length and SHOULD completely describe the function. It MUST be written in Github-flavored Markdown.
-
-`options`: An object describing the possible values for the task's `options` parameter. Every property that is permitted in the `options` parameter should have a corresponding property in this descriptor. The key MUST be identical to the key used in the actual options parameter, and the value MUST be an object, as follows:
-
-    exports.yourFunction.descriptors.options.<key> = {
-        description: "A detailed description of the option. Markdown may be used."
-        // Note: future versions of this specification are likely to add additional option descriptors.
-    };
-
-`options.<key>.description`: A detailed, human-readable description of the option. The first sentence SHOULD be less than 50 characters and provide a summary description of the option. The rest of the description may be of any length and SHOULD completely describe the option. It MUST be written in Github-flavored Markdown.
-
-
 ### Mapper Modules
 
 Mapper modules export a single function, `map()`, that transforms a Simplebuild module in some way. A mapper module SHOULD have a name starting with `simplebuild-map-`. (For example, `simplebuild-map-yourmapper.js`.)
 
-Mapper modules SHOULD use the `createMapFunction()` API call, defined in the `simplebuild` module, to create the `map()` function. Mapper modules MUST export only one function, named `map()`. The `map()` function call itself SHOULD NOT have any side effects, but the functions `map()` returns MAY have side effects.
+Mapper modules MUST export only one function, named `map()`. The `map()` function call itself SHOULD NOT have any side effects, but the functions `map()` returns MAY have side effects. Mapper modules SHOULD use the `createMapFunction()` API call, defined in the `simplebuild` module, to create the `map()` function. 
 
 The `map()` function MUST take a single parameter and return an object, as follows. These requirements are handled automatically by `createMapFunction()`.
 
@@ -262,7 +238,7 @@ The `map()` function MUST take a single parameter and return an object, as follo
 
 * When the parameter is any other object, it will be considered to be a task module. In this case, the `map()` function MUST return a task module object. The returned task module SHOULD have different functions and/or behavior than the provided task module.
 
-* When the parameter is a string, it will be considered to be an npm module. In this case, the `map()` function MUST use the Node.js `require()` API call to load the module, then apply the above rules.
+* When the parameter is a string, it will be considered to be an Node.js module. In this case, the `map()` function MUST use the Node.js `require()` API call to load the module, then apply the above rules.
 
 
 ### Extension Modules
@@ -275,18 +251,16 @@ Extension modules MAY export any number of functions with any signature. Exporte
 To Do
 -----
 
-Change before release:
-- Modify examples to use new descriptor spec
-
 Things that still need work:
 - When creating a module, the options and parameters need a lot of checking in `index.js`. Writing tests for this behavior is particularly tedious and repetitive. Create helper methods for this that take advantage of descriptors.
 - Should messages be written to stderr instead of stdout? Or perhaps some sort of 'reporter' spec
 - Pull `__test_files.js` out of simplebuild-jshint into its own module or helper
 - Pull `expectSuccess()` and `expectFailure()` out of simplebuild-jshint (_index_test.js)
+- The examples use an out-of-date version of the spec. In particular, they rely on descriptors, which have been removed from the spec for now.
 
 Version History
 ---------------
-* 0.4.0: Removed descriptors
+* 0.4.0: Removed descriptors for now
 * 0.3.0: Reworked descriptors
 * 0.2.0: Fleshed out spec further, made library work as proper npm module
 * 0.1.0: Initial release
