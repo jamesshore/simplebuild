@@ -21,12 +21,13 @@
   "author": "James Shore",
   "license": "MIT",
   "devDependencies": {
-    "jshint": "~2.3.0",
-    "mocha": "~1.15.0",
+    "chai": "^3.2.0",
     "expect.js": "~0.2.0",
-    "jake": "~0.7.6",
     "grunt": "~0.4.2",
-    "grunt-cli": "~0.1.11"
+    "grunt-cli": "~0.1.11",
+    "jake": "~0.7.6",
+    "jshint": "~2.3.0",
+    "mocha": "~1.15.0"
   },
   "dependencies": {
     "q": "~0.9.7",

@@ -13,7 +13,7 @@ var mocha = promisify("../examples/tasks/simplebuild-mocha.js");
 jshint.validate({
 	files: [ "**/*.js", "!node_modules/**/*" ],
 	options: lintOptions(),
-	globals: {}
+	globals: lintGlobals()
 })
 .then(function() {
 	return mocha.runTests({
@@ -44,5 +44,17 @@ function lintOptions() {
 		strict: true,
 		trailing: true,
 		node: true
+	};
+}
+
+function lintGlobals() {
+	return {
+		// Mocha
+		describe: false,
+		it: false,
+		before: false,
+		after: false,
+		beforeEach: false,
+		afterEach: false,
 	};
 }

@@ -19,7 +19,7 @@ desc("Lint everything");
 jshint.validate.task("lint", {
 	files: [ "**/*.js", "!node_modules/**/*" ],
 	options: lintOptions(),
-	globals: {}
+	globals: lintGlobals()
 });
 
 desc("Test everything");
@@ -45,5 +45,17 @@ function lintOptions() {
 		strict: true,
 		trailing: true,
 		node: true
+	};
+}
+
+function lintGlobals() {
+	return {
+		// Mocha
+		describe: false,
+		it: false,
+		before: false,
+		after: false,
+		beforeEach: false,
+		afterEach: false,
 	};
 }

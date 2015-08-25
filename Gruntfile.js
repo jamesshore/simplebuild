@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 		JSHint: {
 			files: [ "**/*.js", "!node_modules/**/*" ],
 			options: lintOptions(),
-			globals: {}
+			globals: lintGlobals()
 		},
 
 		Mocha: {
@@ -39,6 +39,18 @@ module.exports = function(grunt) {
 			strict: true,
 			trailing: true,
 			node: true
+		};
+	}
+
+	function lintGlobals() {
+		return {
+			// Mocha
+			describe: false,
+			it: false,
+			before: false,
+			after: false,
+			beforeEach: false,
+			afterEach: false,
 		};
 	}
 
