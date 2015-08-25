@@ -15,6 +15,7 @@
 	var WATCH = [
 		"Jakefile.js",
 		"lib/**/*.js",
+		"examples/**/*.js",
 	];
 
 	var COMMAND = "./jake.sh";
