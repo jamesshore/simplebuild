@@ -12,7 +12,7 @@ var mocha = jakeify("../examples/tasks/simplebuild-mocha.js");
 
 
 task("default", ["lint", "test"], function() {
-	console.log("\n\nOK");
+	console.log("\n\nBUILD OK");
 });
 
 desc("Lint everything");

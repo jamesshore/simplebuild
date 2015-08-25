@@ -21,10 +21,10 @@ jshint.validate({
 	});
 })
 .then(function() {
-	console.log("\n\nOK");
+	console.log("\n\nBUILD OK");
 })
 .fail(function(message) {
-	console.log("\n\nFAILED: " + message);
+	console.log("\n\nBUILD FAILED: " + message);
 });
 
 function lintOptions() {
