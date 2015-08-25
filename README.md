@@ -1,5 +1,4 @@
-Simplebuild - Universal Task Automation for Node.js
-====================
+# Simplebuild - Universal Task Automation for Node.js
 
 Tools like [Grunt](http://www.gruntjs.com) have powerful and flexible plugin ecosystems, but they only work within their walled garden. If you want to use Grunt plugins in [Jake](https://github.com/mde/jake), Jake tasks in Grunt, or write your own tool using an existing plugin... you're out of luck.
 
@@ -10,8 +9,7 @@ Simplebuild provides the solution. It's a standard way of *creating* and *pluggi
 Note: Simplebuild is still in the proof-of-concept stage. Feedback welcome (be kind). Simplebuild is changing rapidly and shouldn't be used for production work yet.
 
 
-Design Goals
--------
+## Design Goals
 
 *Simple.* Simple to use, simple to create, and simple to extend.
 
@@ -20,8 +18,7 @@ Design Goals
 *Flexible.* Works with multiple styles of automation (Grunt, Jake, promises, etc.) and allows you to compose modules to achieve interesting results.
 
 
-Examples
--------
+## Examples
 
 The following examples use Simplebuild modules to lint and test some code. Note how Simplebuild adapts to provide clean, idiomatic solutions for each tool.
 
@@ -115,8 +112,7 @@ To run the examples:
 1. Run `node build.js`, `./grunt.sh`, or `./jake.sh`. (Windows users, use `node build.js`, `node_modules\.bin\grunt`, or `node_modules\.bin\jake`.)
 
 
-Composability
--------
+## Composability
 
 Simplebuild tasks can be used in any Node.js program, so it's easy to create tasks that depend on other tasks. If there's a module that does just what you need, no worries--just `require()` it and use it!
 
@@ -143,7 +139,7 @@ Gruntfile.js ok                 JSHint
 Jakefile.js ok                  ======
 build.js ok                     Gruntfile.js ok
     ⋮                           Jakefile.js ok
-								build.js ok
+                                build.js ok
   ․․․․․․․․․․․․․․․․․․․               ⋮
 
   19 passing (44ms)             Mocha
@@ -158,28 +154,73 @@ OK                                ․․․․․․․․․․․․․․․�
 ```
 
 
-How It Works
--------
+## How It Works
 
 Simplebuild's magic is based on standardized, composable function signatures and a very small supporting library. There are three kinds of Simplebuild modules:
 
-* *Task modules* do the heavy lifting of task automation. For example, the `simplebuild-jshint` module uses JSHint to check files for errors. Task modules export functions that follow a standard format: `exports.taskFunction = function(options, successCallback, failureCallback) {...}`. This is the only requirement for Simplebuild tasks, other than some recommended documentation, so they're very easy to create.
+* *Task modules* do the heavy lifting of task automation. For example, the `simplebuild-jshint` module uses JSHint to check files for errors. Task modules export functions that follow a standard format: `exports.taskFunction = function(options, successCallback, failureCallback) {...}`.
 
-* *Mapper modules* take a task module as input and provide a task module as output. (They can also convert other mapper modules, which allows them to be chained together.) They're programmed to provide a generally-useful improvement to task modules. For example, the `simplebuild-map-header` module adds a header to each task. The `createMapFunction()` call in the simplebuild library makes mapper modules easy to create.
+* *Mapper modules* augment task modules in some way. For example, the `simplebuild-map-header` module adds a header to each task. Mappers output task modules, so they can be added to a build script without requiring individual tasks to be changed. Multiple mapper modules may be chained together.
 
-* *Extension modules* are like mapper modules, except that they don't have any restrictions on their input or output. They're most often used for compatibility with other coding styles. For example, `simplebuild-ext-promsify` turns Simplebuild tasks into promises, and `simplebuild-ext-gruntify` loads Simplebuild modules into Grunt.
+* *Extension modules* are like mapper modules, except that they don't have any restrictions on their input or output. They're most often used for compatibility with other coding styles or build tools. For example, `simplebuild-ext-promsify` turns Simplebuild tasks into promises, and `simplebuild-ext-gruntify` loads Simplebuild modules into Grunt.
 
 
-Contributions
--------
+## API
+
+In addition to the Simplebuild spec, this npm module is also a library for use by Simplebuild module authors.
+
+Task module authors may wish to use this function:
+ 
+* `deglobSync(globs)`: Convert file globs into files.
+
+Mapper and extension module authors may wish to use these functions:
+
+* `createMapFunction(mapperFn)`: Create the `map` function required for a mapper module.
+* `mapTaskModule(module, mapperFn)`: Modify every function in a module.
+
+
+### `deglobSync(globs)`
+
+Convert file globs into files. Given an array or string, this function returns an array of filenames. Any glob (*) or globstar (**) in the `globs` parameter is converted to the actual names of files in the filesystem. If any entry in the `globs` parameter starts with an exclamation mark (!), then those files will be excluded from the result.
+
+* `globs`: A string or array containing file globs. 
+
+* **Returns**: An array of filename strings.
+
+
+### `createMapFunction(mapperFn)`
+
+Create the `map` function required for a mapper module. Use it like this:
+
+```javascript
+exports.map = createMapFunction(myMapper);
+```
+
+* `mapperFn(taskFn)`: A function that returns a task function, presumably by operating on `taskFn` in some way. 
+
+* **Returns**: A `map` function satisfying the mapper module specification.
+
+
+### `mapTaskModule(module, mapperFn)`
+
+Create a new task module based on an existing task module. Similar to `createMapFunction`, except lower level.
+
+* `module`: The task module to map.
+
+* `mapperFn(taskFn)`: A function that returns a task function, presumably by operating on `taskFn` in some way. 
+
+* **Returns**: The new task module.
+
+
+## Contributions
 
 Contributions, feedback, and discussions are welcome. Please use Github's issue tracker to open issues or pull requests.
 
 **Known issues**: This is still very experimental, proof-of-concept stuff. The core `simplebuild` library is likely to see a lot of changes, the spec is likely to change and improve, and there aren't any tests yet.
 
 
-Formal Specification
--------
+## Formal Specification
+
 **[Stability](http://nodejs.org/api/documentation.html#documentation_stability_index): 1 - Experimental**
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this section are to be interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
@@ -207,7 +248,7 @@ Tasks that fail SHOULD provide a detailed explanation suitable for debugging the
 
 Tasks that succeed SHOULD NOT write to `process.stdout` by default. They MAY write more if configured to do so with the `options` parameter.
 
-Tasks that are slow or long-running MAY provide minimalistic progress output (such as periods) but SHOULD NOT provide more detailed information by default. They MAY write more if configured to do so with the `options` parameter.
+Tasks that are slow or long-running MAY provide minimalistic progress output (such as periods) but SHOULD NOT provide more detailed information by default. They MAY provide more if configured to do so with the `options` parameter.
 
 Tasks SHOULD NOT write to `process.stderr` under any circumstances.
 
@@ -216,13 +257,13 @@ Tasks SHOULD NOT write to `process.stderr` under any circumstances.
 
 Mapper modules export a single function, `map()`, that transforms a Simplebuild module in some way. A mapper module SHOULD have a name starting with `simplebuild-map-`. (For example, `simplebuild-map-yourmapper.js`.)
 
-Mapper modules MUST export only one function, named `map()`. The `map()` function call itself SHOULD NOT have any side effects, but the functions `map()` returns MAY have side effects. Mapper modules SHOULD use the `createMapFunction()` API call, defined in the `simplebuild` module, to create the `map()` function. 
+Mapper modules MUST export only one function, named `map()`. The `map()` function call itself SHOULD NOT have any side effects, but the functions `map()` returns may. Mapper modules SHOULD use the `createMapFunction()` API call defined in the `simplebuild` module to create the `map()` function. 
 
 The `map()` function MUST take a single parameter and return an object, as follows. These requirements are handled automatically by `createMapFunction()`.
 
 * When the parameter is an object with a single key named `map`, it will be considered to be a mapper module. In this case, the `map()` function MUST return a mapper module. The returned module's `map()` function MUST wrap the provided mapper module so that calling `thisModule.map(providedModule).map(taskModule)` is equivalent to calling `thisModule.map(providedModule.map(taskModule))`
 
-* When the parameter is any other object, it will be considered to be a task module. In this case, the `map()` function MUST return a task module object. The returned task module SHOULD have different functions and/or behavior than the provided task module.
+* When the parameter is any other object, it will be considered to be a task module. In this case, the `map()` function MUST return a task module. The returned task module SHOULD have different functions and/or behavior than the provided task module.
 
 * When the parameter is a string, it will be considered to be an Node.js module. In this case, the `map()` function MUST use the Node.js `require()` API call to load the module, then apply the above rules.
 
@@ -231,11 +272,10 @@ The `map()` function MUST take a single parameter and return an object, as follo
 
 Extension modules extend the capabilities of Simplebuild. An extension module SHOULD have a name starting with "simplebuild-ext-" (for example, "simplebuild-ext-yourextension.js").
 
-Extension modules MAY export any number of functions with any signature. Exported functions MAY do anything, including accepting other Simplebuild modules as parameters. When a function supports loading task modules by name, it SHOULD also support mapper modules as well. The `createMapFunction` API call defined in the `simplebuild` module may be helpful here.
+Extension modules are unrestricted. They may export any number of functions, with any signatures, that do anything. When a function supports loading task modules by name, it SHOULD also support mapper modules as well. The `createMapFunction` API call defined in the `simplebuild` module may be helpful here.
 
 
-To Do
------
+## To Do
 
 Things that still need work:
 - When creating a module, the options and parameters need a lot of checking in `index.js`. Writing tests for this behavior is particularly tedious and repetitive. Create helper methods for this that take advantage of descriptors.
@@ -244,20 +284,31 @@ Things that still need work:
 - Pull `expectSuccess()` and `expectFailure()` out of simplebuild-jshint (_index_test.js)
 - The examples use an out-of-date version of the spec. In particular, they rely on descriptors, which have been removed from the spec for now.
 
-Version History
----------------
-* 0.4.0: Removed descriptors for now
+
+## Version History
+
+* 0.4.0: Removed descriptors for now, updated documentation
 * 0.3.0: Reworked descriptors
 * 0.2.0: Fleshed out spec further, made library work as proper npm module
 * 0.1.0: Initial release
 
-Credits
--------
+
+## Credits
+
 Simplebuild is a project of [Let's Code: Test-Driven JavaScript](http://www.letscodejavascript.com), a screencast on professional, rigorous JavaScript development. Created by James Shore.
 
 
-License
--------
+### Release Process
+
+1. Update version history in readme and check in
+2. Ensure clean build using all examples: `./jake.sh && ./grunt.sh && node build.js`
+3. Update npm version: `npm version [major|minor|patch]`
+4. Release to npm: `npm publish`
+5. Release to github: `git push && git push --tags`
+
+
+## License
+
 The MIT License (MIT)
 
 Copyright (c) 2013-2015 James Shore
