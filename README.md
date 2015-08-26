@@ -335,6 +335,7 @@ Things that still need work:
 
 ## Version History
 
+* 0.5.0: Added `normalizeOptions` API call
 * 0.4.0: Removed descriptors for now, updated documentation
 * 0.3.0: Reworked descriptors
 * 0.2.0: Fleshed out spec further, made library work as proper npm module
