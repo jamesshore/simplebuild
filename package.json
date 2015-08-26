@@ -33,6 +33,7 @@
   "dependencies": {
     "array-to-sentence": "^1.0.1",
     "glob": "~3.2.7",
+    "object-assign": "^4.0.1",
     "q": "~0.9.7"
   }
 }
