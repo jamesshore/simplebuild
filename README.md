@@ -169,8 +169,9 @@ Simplebuild's magic is based on standardized, composable function signatures and
 
 In addition to the Simplebuild spec, this npm module is also a library for use by Simplebuild module authors.
 
-Task module authors may wish to use this function:
+Task module authors may wish to use these functions:
  
+* `normalizeOptions(defaults, options, types)`: Check the `options` parameter provided to a simplebuild task.
 * `deglobSync(globs)`: Convert file globs into files.
 
 Mapper and extension module authors may wish to use these functions:
@@ -178,6 +179,46 @@ Mapper and extension module authors may wish to use these functions:
 * `createMapFunction(mapperFn)`: Create the `map` function required for a mapper module.
 * `mapTaskModule(module, mapperFn)`: Modify every function in a module.
 
+
+### `normalizeOptions(defaultsAndNormalizedObject, userOptions, types)`
+
+Applies defaults to a simplebuild task's options and type-checks the result. The current signature **may change**.
+
+* `defaultsAndNormalizedObject`: The object serves two purposes: it contains the task's default options **and** it will be **modified** to contain with the user's options normAn object containing the default options. As a result, this object **must** be assigned to a variable before being passed into `normalize`, or the normalized options will be lost.
+
+* `userOptions`: The options provided to the task function by the user.
+
+* `types`: An object containing the expected types of any parameters. Use object constructors to specify the types. Your options are `Boolean`, `String`, `Number`, `Object`, `Array`, and `Function`. For example, if your options object requires a "name" parameter that's a string, you would use `{ name: String }`.
+
+  If you want to specify a specific object subclass, such as `RegExp` or `Date`, pass in the constructor for the subclass. You may also use a custom subclass that you've created. For example, if your options object requires a "timestamp" parameter that's a Date object, you would use `{ timestamp: Date }`.
+  
+  If you want to specify specific fields in an object, provide another `types`-style object containing the fields you want to check. (Note that any extra fields provided by the user will be ignored.) For example, if your options object requires a "report" parameter with a "verbose" boolean and a "filename" string, you would use `{ report: { verbose: Boolean, filename: String } }`.
+
+  If a parameter can have multiple types, put all the valid types in an array. For examples, if your options object requires a "files" parameter that may be a string or an array, you would use `{ files: [ String, Array ] }`.
+  
+  If a parameter is optional or nullable, put `undefined` or `null` as one of the valid types in the array. If it can be NaN, put `NaN` in the array. For example, if your options object takes an optional "output" parameter that's a string, you would use `output: [ String, undefined ]`.
+  
+* **Returns**: A human-readable error message if `userOptions` failed to validate or `null` if it succeeded.
+  
+**Example:**
+
+```javascript
+function myTask(userOptions, succeed, fail) {
+  var options = {   // default options
+    timestamp: Date.now()
+  };
+  var types = {
+    files: [ String, Array ],
+    timestamp: Date,
+    output: [ String, undefined ]
+  };
+  var optionsError = simplebuild.normalizeOptions(options, userOptions, types);
+  if (optionsError) return fail(optionsError);
+  
+  // now 'options' contains the normalized options.
+  // ... task implemented here ...
+}
+```
 
 ### `deglobSync(globs)`
 
@@ -231,18 +272,18 @@ Task modules export functions that follow a common format. A task module SHOULD 
 
 Task functions MUST NOT be named `map()`, `sync()`, or use a name ending in `Sync()`. (These restrictions are case-sensitive.) Any other name is permitted. Each task function MUST conform to this signature:
 
-    exports.yourFunction = function(options, success, failure) { ... }
+    exports.yourFunction = function(options, succeed, fail) { ... }
 
 `options` (REQUIRED): Configuration information. Any type of variable may be used, but an object is recommended. If a task function has no configuration, this variable is still required, but may be ignored.
 
-`success()` (REQUIRED): Callback function. Each task function MUST call success() with no parameters when it finishes successfully.
+`succeed()` (REQUIRED): Callback function. Each task function MUST call succeed() with no parameters when it finishes successfully.
 
-`failure(messageString)` (REQUIRED): Callback function. Each task function MUST call failure() with a brief human-readable explanation when it fails. The explanation SHOULD be less than 50 characters.
+`fail(messageString)` (REQUIRED): Callback function. Each task function MUST call fail() with a brief human-readable explanation when it fails. The explanation SHOULD be less than 50 characters.
 
 
 #### Task Behavior
 
-Task functions MUST NOT return values or throw exceptions. Instead, either the `success()` or `failure()` callback MUST be called exactly once when the task is complete. The callback may be called synchronously or asynchronously.
+Task functions MUST NOT return values or throw exceptions. Instead, either the `succeed()` or `fail()` callback MUST be called exactly once when the task is complete. The callback may be called synchronously or asynchronously.
 
 Tasks that fail SHOULD provide a detailed explanation suitable for debugging the problem. If the explanation is too long to fit in the 50-character failure mesage, the task SHOULD write the details to `process.stdout` before failing. (Note that calling `console.log()` is a convenient way of writing to `process.stdout`.)
 
@@ -281,7 +322,7 @@ Things that still need work:
 - When creating a module, the options and parameters need a lot of checking in `index.js`. Writing tests for this behavior is particularly tedious and repetitive. Create helper methods for this that take advantage of descriptors.
 - Should messages be written to stderr instead of stdout? Or perhaps some sort of 'reporter' spec
 - Pull `__test_files.js` out of simplebuild-jshint into its own module or helper
-- Pull `expectSuccess()` and `expectFailure()` out of simplebuild-jshint (_index_test.js)
+- Pull `expectsucceed()` and `expectFailure()` out of simplebuild-jshint (_index_test.js)
 - The examples use an out-of-date version of the spec. In particular, they rely on descriptors, which have been removed from the spec for now.
 
 
