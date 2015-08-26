@@ -171,7 +171,7 @@ In addition to the Simplebuild spec, this npm module is also a library for use b
 
 Task module authors may wish to use these functions:
  
-* `normalizeOptions(defaults, options, types)`: Check the `options` parameter provided to a simplebuild task.
+* `normalizeOptions(userOptions, defaults, types)`: Check the `userOptions` parameter provided to a simplebuild task.
 * `deglobSync(globs)`: Convert file globs into files.
 
 Mapper and extension module authors may wish to use these functions:
@@ -180,43 +180,50 @@ Mapper and extension module authors may wish to use these functions:
 * `mapTaskModule(module, mapperFn)`: Modify every function in a module.
 
 
-### `normalizeOptions(defaultsAndNormalizedObject, userOptions, types)`
+### `normalizeOptions(userOptions, defaults, types)`
 
-Applies defaults to a simplebuild task's options and type-checks the result. The current signature **may change**.
+Applies defaults to a simplebuild task's `userOptions` argument and type-checks the result.
 
-* `defaultsAndNormalizedObject`: The object serves two purposes: it contains the task's default options **and** it will be **modified** to contain with the user's options normAn object containing the default options. As a result, this object **must** be assigned to a variable before being passed into `normalize`, or the normalized options will be lost.
+* `userOptions`: The options passed into the task function. Must be an object.
 
-* `userOptions`: The options provided to the task function by the user.
+* `defaults`: The task's default options. Any parameter that's present in `defaults` but not in `userOptions` will be included in the final options object.
 
-* `types`: An object containing the expected types of any parameters. Use object constructors to specify the types. Your options are `Boolean`, `String`, `Number`, `Object`, `Array`, and `Function`. For example, if your options object requires a "name" parameter that's a string, you would use `{ name: String }`.
+* `types`: An object containing the expected types for each option. The parameters in this object correspond to the parameters in the options object. The types are checked on the final options object after the defaults are applied. Any fields that are in the final options and *not* in the `types` object will not be checked.
 
-  If you want to specify a specific object subclass, such as `RegExp` or `Date`, pass in the constructor for the subclass. You may also use a custom subclass that you've created. For example, if your options object requires a "timestamp" parameter that's a Date object, you would use `{ timestamp: Date }`.
+    * To specify a **language type**, use the corresponding object constructor: `Boolean`, `String`, `Number`, `Object`, `Array`, or `Function`. For example, if your options include a "name" parameter that's a string, you would use `name: String`.
+
+    * To specify an **object type**, use the object constructor, such as `RegExp` or `Date`. You may also pass in the constructor for a custom subclass. For example, if your options object requires a "timestamp" parameter that's a Date object, you would use `timestamp: Date`.
   
-  If you want to specify specific fields in an object, provide another `types`-style object containing the fields you want to check. (Note that any extra fields provided by the user will be ignored.) For example, if your options object requires a "report" parameter with a "verbose" boolean and a "filename" string, you would use `{ report: { verbose: Boolean, filename: String } }`.
-
-  If a parameter can have multiple types, put all the valid types in an array. For examples, if your options object requires a "files" parameter that may be a string or an array, you would use `{ files: [ String, Array ] }`.
+    * To specify **specific object fields**, recursively provide another `types`-style object containing the fields you want to check. For example, if your options object requires a "report" object that contains a "verbose" boolean and a "filename" string, you would use `report: { verbose: Boolean, filename: String }`.
   
-  If a parameter is optional or nullable, put `undefined` or `null` as one of the valid types in the array. If it can be NaN, put `NaN` in the array. For example, if your options object takes an optional "output" parameter that's a string, you would use `output: [ String, undefined ]`.
+    * To specify **multiple valid types**, provide an array containing each type. For example, if your options object requires a "files" parameter that may be a string or an array, you would use `files: [ String, Array ]`.
   
-* **Returns**: A human-readable error message if `userOptions` failed to validate or `null` if it succeeded.
+    * To specify **optional, nullable, or NaN-able types**, put `undefined`, `null`, or `NaN` as one of the valid types in the array. For example, if your options object takes an optional "output" parameter that's a string, you would use `output: [ String, undefined ]`.
+  
+* **Returns**: The normalized options object, consisting of `userOptions` combined with `defaults`.
+ 
+* **Throws**: If the type check fails, an `Error` object will be thrown with a human-readable explanation of the type check failure in the `message` parameter. Note that simplebuild task functions are not allowed to throw exceptions, so be sure to catch errors and return `err.message` via the `fail` callback. 
   
 **Example:**
 
 ```javascript
 function myTask(userOptions, succeed, fail) {
-  var options = {   // default options
-    timestamp: Date.now()
-  };
-  var types = {
-    files: [ String, Array ],
-    timestamp: Date,
-    output: [ String, undefined ]
-  };
-  var optionsError = simplebuild.normalizeOptions(options, userOptions, types);
-  if (optionsError) return fail(optionsError);
-  
-  // now 'options' contains the normalized options.
-  // ... task implemented here ...
+  try {
+    var defaults = {
+      timestamp: Date.now()
+    };
+    var types = {
+      files: [ String, Array ],
+      timestamp: Date,
+      output: [ String, undefined ]
+    };
+    var options = simplebuild.normalizeOptions(userOptions, defaults, types);
+   
+    // ... task implemented here ...
+  }
+  catch (err) {
+    return fail(err.message);
+  }
 }
 ```
 
