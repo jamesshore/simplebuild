@@ -335,6 +335,7 @@ Things that still need work:
 
 ## Version History
 
+* 0.5.1: Bugfix: `normalizeOptions` won't crash when option is an object and expected type includes undefined or null
 * 0.5.0: Added `normalizeOptions` API call
 * 0.4.0: Removed descriptors for now, updated documentation
 * 0.3.0: Reworked descriptors
