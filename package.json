@@ -1,6 +1,6 @@
 {
   "name": "simplebuild",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Universal task automation",
   "main": "lib/simplebuild.js",
   "repository": {
