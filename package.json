@@ -28,7 +28,8 @@
     "grunt-cli": "~0.1.11",
     "jake": "~0.7.6",
     "jshint": "~2.3.0",
-    "mocha": "~1.15.0"
+    "mocha": "~1.15.0",
+    "semver": "^5.3.0"
   },
   "dependencies": {
     "array-to-sentence": "^1.0.1",

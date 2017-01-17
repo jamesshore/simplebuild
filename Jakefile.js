@@ -11,7 +11,7 @@ var jshint = jakeify("../examples/tasks/simplebuild-jshint.js");
 var mocha = jakeify("../examples/tasks/simplebuild-mocha.js");
 
 
-task("default", ["version", "lint", "test"], function() {
+task("default", ["lint", "test"], function() {
 	console.log("\n\nBUILD OK");
 });
 
